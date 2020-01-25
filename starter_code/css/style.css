@@ -1,5 +1,6 @@
 body {
   text-align: center;
+  position: relative;
 }
 
 body h1 {
@@ -14,11 +15,11 @@ body button {
   padding: 10px 20px;
   border: 0;
   box-shadow: 0;
-  border-radius: 5px;
   margin-bottom: 20px;
 }
 
-/* #canvas {
-  
-  background-image: "images/bg.png";
-} */
+#canvas {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}

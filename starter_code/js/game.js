@@ -22,6 +22,8 @@ const Game = {
     this.height = window.innerHeight;
     this.canvas.width = this.width;
     this.canvas.height = this.height;
+    this.canvas.setAttribute("width", this.width);
+    this.canvas.setAttribute("height", this.height);
   },
 
   start() {
@@ -97,3 +99,5 @@ const Game = {
   //       this.character.setListeners();
   //   }
 };
+
+window.onresize = setDimensions;
