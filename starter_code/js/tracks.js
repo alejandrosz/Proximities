@@ -1,4 +1,4 @@
-class Tracks {
+class Track {
   constructor(ctx, colour) {
     this.ctx = ctx;
     this.originStation = undefined;

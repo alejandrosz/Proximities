@@ -14,7 +14,6 @@ const Game = {
     this.canvas = document.getElementById("canvas");
     this.ctx = this.canvas.getContext("2d");
     this.setDimensions();
-    // this.setListeners();
     this.start();
   },
 
@@ -30,6 +29,9 @@ const Game = {
   start() {
     this.reset();
     this.createStarterStations();
+    this.createStartedTracks();
+    this.setListeners();
+    console.log(this.tracks);
     this.interval = setInterval(() => {
       this.framesCounter++;
       this.drawAll();
@@ -47,74 +49,83 @@ const Game = {
     this.background.draw();
     this.stations.forEach(station => station.draw());
     this.passengers.forEach(passenger => passenger.draw());
-    this.tracks.forEach(track => track.draw());
+    // this.tracks.forEach(track => track.draw());
     // this.trains.forEach(train => train.draw());
   },
   // moveAll() {
-    // this.character.move();
-    // this.character.jump();
-    // this.obstacles.forEach(obs => obs.move());
-    // this.background.move();
+  // this.character.move();
+  // this.character.jump();
+  // this.obstacles.forEach(obs => obs.move());
+  // this.background.move();
   // },
-
-
 
   gameOver() {
     clearInterval(this.interval);
   },
 
-  // setListeners() {
-  //   this.station;
-  //   this.endStation;
+  setListeners() {
+    this.station;
+    this.endStation;
 
-  //   this.canvas.addEventListeners(
-  //     "mousedown",
-  //     (e => {
-  //       let pressMouseX = e.clientX;
-  //       let pressMouseY = e.clientY;
-  //       selectedStation = this.closestClickedStation(pressMouseX, pressMouseY);
-  //       if (selectedStation) {
-  //         this.selectedTrack.addStop(selectedStation);
-  //       }
-  //       this.dragging = true;
-  //     },
-  //     false).bind(this)
-  //   );
+    this.canvas.addEventListener(
+      "mousedown",
+      // function() {
+      //   console.log("ola k ase");
+      // }
+      //   (e => {
+      //     let pressMouseX = e.clientX;
+      //     let pressMouseY = e.clientY;
+      //     selectedStation = this.closestClickedStation(pressMouseX, pressMouseY);
+      //     if (selectedStation) {
+      //       this.selectedTrack.addStop(selectedStation);
+      //     }
+      //     this.dragging = true;
+      //   }
+      // );
+      e => {
+        let selectedStation = this.closestClickedStation(e.clientX, e.clientY);
+        console.log(selectedStation);
+        if (selectedStation) {
+          this.selectedTrack.addStop(selectedStation);
+          console.log("station");
+        }
+      }
+    );
 
-  //   this.canvas.addEventListeners(
-  //     "mousemove",
-  //     (e => {
-  //       let currentMouseX = e.clientX;
-  //       let currentMouseY = e.clientY;
-  //       this.dragging = true;
-  //     },
-  //     false).bind(this)
-  //   );
+    //   this.canvas.addEventListeners(
+    //     "mousemove",
+    //     (e => {
+    //       let currentMouseX = e.clientX;
+    //       let currentMouseY = e.clientY;
+    //       this.dragging = true;
+    //     },
+    //     false).bind(this)
+    //   );
 
-  //   this.canvas.addEventListeners(
-  //     "mouseup",
-  //     (e => {
-  //       let releaseMouseX = e.clientX;
-  //       let releaseMouseY = e.clientY;
-  //       this.dragging = true;
-  //     },
-  //     false).bind(this)
-  //   );
-  // },
+    //   this.canvas.addEventListeners(
+    //     "mouseup",
+    //     (e => {
+    //       let releaseMouseX = e.clientX;
+    //       let releaseMouseY = e.clientY;
+    //       this.dragging = true;
+    //     },
+    //     false).bind(this)
+    //   );
+  },
 
   closestClickedStation(mouseX, mouseY) {
     return this.stations.find(station => {
-      let goodX = station.posX - 25 <= mouseX && mouseX < station.posX + 25;
-      let goodY = station.posY - 25 <= mouseY && mouseY < station.posY + 25;
+      let goodX = station.posX - 50 <= mouseX && mouseX < station.posX + 50;
+      let goodY = station.posY - 50 <= mouseY && mouseY < station.posY + 50;
       if (goodX && goodY) {
-        return true;
+        return station;
       } else {
         return false;
       }
     });
   },
 
-  createTracks() {
+  createStartedTracks() {
     let redLine = new Track(this.ctx, "red");
     let blueLine = new Track(this.ctx, "blue");
     let yellowLine = new Track(this.ctx, "yellow");
@@ -123,9 +134,9 @@ const Game = {
   },
 
   createStarterStations() {
-    let station1 = new Station(this.ctx, this.width, this.height)
-    let station2 = new Station(this.ctx, this.width, this.height)
-    let station3 = new Station(this.ctx, this.width, this.height)
+    let station1 = new Station(this.ctx, this.width, this.height);
+    let station2 = new Station(this.ctx, this.width, this.height);
+    let station3 = new Station(this.ctx, this.width, this.height);
     this.stations.push(station1, station2, station3);
   },
 
@@ -162,4 +173,4 @@ const Game = {
   // },
 };
 
-window.onresize = setDimensions;
+// window.onresize = setDimensions;
