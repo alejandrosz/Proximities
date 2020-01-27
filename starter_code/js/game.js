@@ -9,15 +9,12 @@ const Game = {
   tracks: [],
   passengers: [],
   // trains: [],
-  // keys: 32,
-  // obstacles: [],
 
   init() {
     this.canvas = document.getElementById("canvas");
     this.ctx = this.canvas.getContext("2d");
-    // this.allEventListeners();
     this.setDimensions();
-    this.setListeners();
+    // this.setListeners();
     this.start();
   },
 
@@ -32,18 +29,12 @@ const Game = {
 
   start() {
     this.reset();
+    this.createStarterStations();
     this.interval = setInterval(() => {
       this.framesCounter++;
-      // if (this.isCollisionsTop()) {
-      //   this.gameOver();
-      // }
-      // if (this.isCollisionsBottom()) {
-      //   this.gameOver();
-      // }
-      // if (this.framesCounter > 1200) this.framesCounter = 0;
       this.drawAll();
-      this.moveAll();
-      this.generateObstacles();
+      // this.generateAll();
+      // this.moveAll();
     }, 1000 / this.fps);
   },
 
@@ -53,17 +44,18 @@ const Game = {
     // this.obstacles = [];
   },
   drawAll() {
+    this.background.draw();
     this.stations.forEach(station => station.draw());
     this.passengers.forEach(passenger => passenger.draw());
     this.tracks.forEach(track => track.draw());
     // this.trains.forEach(train => train.draw());
   },
-  moveAll() {
-    this.character.move();
-    this.character.jump();
-    this.obstacles.forEach(obs => obs.move());
+  // moveAll() {
+    // this.character.move();
+    // this.character.jump();
+    // this.obstacles.forEach(obs => obs.move());
     // this.background.move();
-  },
+  // },
 
 
 
@@ -71,44 +63,44 @@ const Game = {
     clearInterval(this.interval);
   },
 
-  setListeners() {
-    this.station;
-    this.endStation;
+  // setListeners() {
+  //   this.station;
+  //   this.endStation;
 
-    this.canvas.addEventListeners(
-      "mousedown",
-      (e => {
-        let pressMouseX = e.clientX;
-        let pressMouseY = e.clientY;
-        selectedStation = this.closestClickedStation(pressMouseX, pressMouseY);
-        if (selectedStation) {
-          this.selectedTrack.addStop(selectedStation);
-        }
-        this.dragging = true;
-      },
-      false).bind(this)
-    );
+  //   this.canvas.addEventListeners(
+  //     "mousedown",
+  //     (e => {
+  //       let pressMouseX = e.clientX;
+  //       let pressMouseY = e.clientY;
+  //       selectedStation = this.closestClickedStation(pressMouseX, pressMouseY);
+  //       if (selectedStation) {
+  //         this.selectedTrack.addStop(selectedStation);
+  //       }
+  //       this.dragging = true;
+  //     },
+  //     false).bind(this)
+  //   );
 
-    this.canvas.addEventListeners(
-      "mousemove",
-      (e => {
-        let currentMouseX = e.clientX;
-        let currentMouseY = e.clientY;
-        this.dragging = true;
-      },
-      false).bind(this)
-    );
+  //   this.canvas.addEventListeners(
+  //     "mousemove",
+  //     (e => {
+  //       let currentMouseX = e.clientX;
+  //       let currentMouseY = e.clientY;
+  //       this.dragging = true;
+  //     },
+  //     false).bind(this)
+  //   );
 
-    this.canvas.addEventListeners(
-      "mouseup",
-      (e => {
-        let releaseMouseX = e.clientX;
-        let releaseMouseY = e.clientY;
-        this.dragging = true;
-      },
-      false).bind(this)
-    );
-  },
+  //   this.canvas.addEventListeners(
+  //     "mouseup",
+  //     (e => {
+  //       let releaseMouseX = e.clientX;
+  //       let releaseMouseY = e.clientY;
+  //       this.dragging = true;
+  //     },
+  //     false).bind(this)
+  //   );
+  // },
 
   closestClickedStation(mouseX, mouseY) {
     return this.stations.find(station => {
@@ -128,6 +120,13 @@ const Game = {
     let yellowLine = new Track(this.ctx, "yellow");
     this.tracks.push(redLine, blueLine, yellowLine);
     this.selectedTrack = redLine;
+  },
+
+  createStarterStations() {
+    let station1 = new Station(this.ctx, this.width, this.height)
+    let station2 = new Station(this.ctx, this.width, this.height)
+    let station3 = new Station(this.ctx, this.width, this.height)
+    this.stations.push(station1, station2, station3);
   },
 
   selectTrack(colour) {

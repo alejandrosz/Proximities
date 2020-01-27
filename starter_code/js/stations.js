@@ -1,27 +1,30 @@
-class Stations {
-  constructor(ctx, time) {
+class Station {
+  constructor(ctx, width, height, time) {
     this.ctx = ctx;
-    this.width = 30;
-    this.height = 30;
-    this.posX = randomX; //dentro de un rango que se amplia con el tiempo restarle la mitad del ancho
-    this.posY = randomY; //dentro de un rango que se amplia con el tiempo restarle la mitad del alto
-    this.type = Math.floor(Math.random() * (3 - 1)) + 1; // entre 1 y 3
+    this.width = 40;
+    this.height = 40;
+    this.posX = width/2 + (Math.floor(Math.random() * (4 - (-4))) + (-4))*60; //dentro de un rango que se amplia con el tiempo restarle la mitad del ancho
+    this.posY = height/2 + (Math.floor(Math.random() * (4 - (-4))) + (-4))*60; //dentro de un rango que se amplia con el tiempo restarle la mitad del alto
+    this.type = Math.floor(Math.random() * (4 - 1)) + 1; // entre 1 y 3
     this.passengers = 0;
     this.image = new Image();
     this.chooseImage();
+    // this.image.src = "./images/stationTriangle.png";
+
+    // this.image.src = "images/bg.png";
     this.connectedStations = []
   }
 
   chooseImage() {
     switch (this.type) {
       case 1:
-        this.image.src = "images/stationTriangle.png";
+        this.image.src = "./images/stationTriangle.png";
         break;
       case 2:
-        this.image.src = "images/stationSquare.png";
+        this.image.src = "./images/stationSquare.png";
         break;
       case 3:
-        this.image.src = "images/stationCircle.png";
+        this.image.src = "./images/stationCircle.png";
         break;
     }
   }
