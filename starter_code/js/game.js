@@ -28,12 +28,11 @@ const Game = {
 
   start() {
     this.reset();
-    this.createStarterStations();
-    this.createStartedTracks();
-    this.setListeners();
     console.log(this.tracks);
     this.interval = setInterval(() => {
       this.framesCounter++;
+      this.createStationsOnTime();
+      this.createPassengersOnTime();
       this.drawAll();
       // this.generateAll();
       // this.moveAll();
@@ -42,14 +41,15 @@ const Game = {
 
   reset() {
     this.background = new Background(this.ctx, this.width, this.height);
-    // this.character = new Character(this.ctx, 80, 80, 0, this.keys);
-    // this.obstacles = [];
+    this.createStarterStations();
+    this.createStartedTracks();
+    this.setListeners();
   },
   drawAll() {
     this.background.draw();
+    this.tracks.forEach(track => track.draw());
     this.stations.forEach(station => station.draw());
     this.passengers.forEach(passenger => passenger.draw());
-    // this.tracks.forEach(track => track.draw());
     // this.trains.forEach(train => train.draw());
   },
   // moveAll() {
@@ -84,10 +84,9 @@ const Game = {
       // );
       e => {
         let selectedStation = this.closestClickedStation(e.clientX, e.clientY);
-        console.log(selectedStation);
         if (selectedStation) {
           this.selectedTrack.addStop(selectedStation);
-          console.log("station");
+          console.log(this.selectedTrack);
         }
       }
     );
@@ -115,8 +114,8 @@ const Game = {
 
   closestClickedStation(mouseX, mouseY) {
     return this.stations.find(station => {
-      let goodX = station.posX - 50 <= mouseX && mouseX < station.posX + 50;
-      let goodY = station.posY - 50 <= mouseY && mouseY < station.posY + 50;
+      let goodX = station.posX - 10 <= mouseX && mouseX < station.posX + 90;
+      let goodY = station.posY - 10 <= mouseY && mouseY < station.posY + 90;
       if (goodX && goodY) {
         return station;
       } else {
@@ -134,10 +133,24 @@ const Game = {
   },
 
   createStarterStations() {
+    // this.stations= new Array(4).fill(new Station(this.ctx, this.width, this.height))
     let station1 = new Station(this.ctx, this.width, this.height);
     let station2 = new Station(this.ctx, this.width, this.height);
     let station3 = new Station(this.ctx, this.width, this.height);
-    this.stations.push(station1, station2, station3);
+    let station4 = new Station(this.ctx, this.width, this.height);
+    this.stations.push(station1, station2, station3, station4);
+  },
+
+  createStationsOnTime() {
+    if (this.framesCounter % 500 === 0) {
+      this.stations.push(new Station(this.ctx, this.width, this.height));
+    }
+  },
+
+  createPassengersOnTime() {
+    if (this.framesCounter % 100 === 0) {
+      this.passengers.push(new Passenger(this.ctx, this.stations));
+    }
   },
 
   selectTrack(colour) {

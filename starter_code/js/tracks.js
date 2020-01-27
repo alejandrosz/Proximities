@@ -11,20 +11,27 @@ class Track {
 
   draw() {
     this.ctx.beginPath(); // Start a new path.
-    this.ctx.lineWidth = "3";
+    this.ctx.lineWidth = "10";
+    this.ctx.lineJoin = "round";
     this.ctx.strokeStyle = this.colour; // This path is green.
-    this.ctx.moveTo(this.connectedStops[0].posX, this.connectedStops[0].posY);
-    this.connectedStops.forEach((station, i) => {
-      this.ctx.lineTo(station.posX, station.posY);
-      this.addNode(station, this.connectedStops[i + 1]);
-    }); //meterle una comprobacion de que hay que meter otro nodo
-    this.ctx.stroke();
-    this.ctx.closePath(); // Close the current path.
+    if (this.connectedStops.length !== 0) {
+      this.ctx.moveTo(
+        this.connectedStops[0].posX + 20,
+        this.connectedStops[0].posY + 20
+      );
+      this.connectedStops.forEach((station, i) => {
+        this.ctx.lineTo(station.posX + 20, station.posY + 20);
+        // this.addNode(station, this.connectedStops[i + 1]);
+      });
+      this.ctx.stroke();
+
+      this.ctx.closePath(); // Close the current path.
+    }
   }
 
   addNode(station, nextStation) {
     if (nextStation) {
-      let newNode = calcNode(
+      let newNode = this.calcNode(
         station.posX,
         station.posY,
         nextStation.posX,
@@ -44,15 +51,17 @@ class Track {
     let y;
     if (xdif < ydif) {
       x = x1;
-      y = y1 - y2 - (x1 - x2);
-    } else if (ydif > xdif) {
-      x = x1 - x2 - (y1 - y2);
+      y = y2 + 20 - Math.abs(x1 + 20 - x2 + 20);
+    } else if (ydif < xdif) {
+      x = x2 + 20 - Math.abs(y1 + 20 - y2 + 20);
       y = y1;
     }
     let newNode = { x, y };
     return newNode;
   }
   addStop(station) {
-    this.connectedStops.push(station);
+    if (!this.connectedStops.includes(station)) {
+      this.connectedStops.push(station);
+    }
   }
 }
