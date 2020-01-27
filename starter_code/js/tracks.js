@@ -50,11 +50,19 @@ class Track {
     let x;
     let y;
     if (xdif < ydif) {
-      x = x1;
-      y = y2 + 20 - Math.abs(x1 + 20 - x2 + 20);
+      x = x2;
+      if (y2 < y1) {
+        y = y2 + 20 + Math.abs(x1 + 20 - x2 + 20);
+      } else {
+        y = y1 + 20 + Math.abs(x1 + 20 - x2 + 20);
+      }
     } else if (ydif < xdif) {
-      x = x2 + 20 - Math.abs(y1 + 20 - y2 + 20);
-      y = y1;
+      if (x2 < x1) {
+        x = x2 + 20 - Math.abs(y1 + 20 - y2 + 20);
+      } else {
+        x = x1 + 20 - Math.abs(y1 + 20 - y2 + 20);
+      }
+      y = y2;
     }
     let newNode = { x, y };
     return newNode;

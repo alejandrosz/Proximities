@@ -28,7 +28,7 @@ const Game = {
 
   start() {
     this.reset();
-    console.log(this.tracks);
+    // console.log(this.tracks);
     this.interval = setInterval(() => {
       this.framesCounter++;
       this.createStationsOnTime();
@@ -70,7 +70,6 @@ const Game = {
     this.canvas.addEventListener(
       "mousedown",
       // function() {
-      //   console.log("ola k ase");
       // }
       //   (e => {
       //     let pressMouseX = e.clientX;
@@ -86,7 +85,6 @@ const Game = {
         let selectedStation = this.closestClickedStation(e.clientX, e.clientY);
         if (selectedStation) {
           this.selectedTrack.addStop(selectedStation);
-          console.log(this.selectedTrack);
         }
       }
     );
@@ -114,8 +112,8 @@ const Game = {
 
   closestClickedStation(mouseX, mouseY) {
     return this.stations.find(station => {
-      let goodX = station.posX - 10 <= mouseX && mouseX < station.posX + 90;
-      let goodY = station.posY - 10 <= mouseY && mouseY < station.posY + 90;
+      let goodX = station.posX <= mouseX && mouseX < station.posX + 70;
+      let goodY = station.posY <= mouseY && mouseY < station.posY + 70;
       if (goodX && goodY) {
         return station;
       } else {
@@ -134,21 +132,24 @@ const Game = {
 
   createStarterStations() {
     // this.stations= new Array(4).fill(new Station(this.ctx, this.width, this.height))
-    let station1 = new Station(this.ctx, this.width, this.height);
-    let station2 = new Station(this.ctx, this.width, this.height);
-    let station3 = new Station(this.ctx, this.width, this.height);
-    let station4 = new Station(this.ctx, this.width, this.height);
-    this.stations.push(station1, station2, station3, station4);
+    let station1 = new Station(this.ctx, this.width, this.height, this);
+    this.stations.push(station1)
+    let station2 = new Station(this.ctx, this.width, this.height, this);
+    this.stations.push(station2)
+    let station3 = new Station(this.ctx, this.width, this.height, this);
+    this.stations.push(station3)
+    let station4 = new Station(this.ctx, this.width, this.height, this);
+    this.stations.push(station4)
   },
 
   createStationsOnTime() {
-    if (this.framesCounter % 500 === 0) {
-      this.stations.push(new Station(this.ctx, this.width, this.height));
+    if (this.framesCounter % 50 === 0) {
+      this.stations.push(new Station(this.ctx, this.width, this.height, this));
     }
   },
 
   createPassengersOnTime() {
-    if (this.framesCounter % 100 === 0) {
+    if (this.framesCounter % 20 === 0) {
       this.passengers.push(new Passenger(this.ctx, this.stations));
     }
   },
