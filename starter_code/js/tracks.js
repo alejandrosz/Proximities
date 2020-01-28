@@ -8,6 +8,7 @@ class Track {
     this.colour = colour; //|| "#FF0000"; en caso de no tener color asignado, es rojo
     this.connectedStops = [];
     this.nodes = [];
+    this.offset = 0;
     // this.path = [];
   }
 
@@ -29,10 +30,23 @@ class Track {
   }
 
   getPath() {
+    switch (this.colour) {
+      case "blue":
+        this.offset = 10;
+        break;
+      case "yellow":
+        this.offset = -10;
+        break;
+      default:
+        this.offset = 0;
+    }
     this.nodes = [];
     if (this.connectedStops.length !== 0) {
       this.connectedStops.forEach((station, i) => {
-        this.nodes.push({ x: station.posX, y: station.posY });
+        this.nodes.push({
+          x: station.posX + this.offset,
+          y: station.posY - this.offset
+        });
         if (i < this.connectedStops.length - 1) {
           let node = this.calcNode(
             station.posX,
@@ -40,7 +54,7 @@ class Track {
             this.connectedStops[i + 1].posX,
             this.connectedStops[i + 1].posY
           );
-          this.nodes.push(node);
+          this.nodes.push({ x: node.x + this.offset, y: node.y - this.offset });
         }
       });
     }

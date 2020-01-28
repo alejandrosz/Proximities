@@ -13,17 +13,16 @@ class Station {
     this.chooseImage();
     this.chooseLocation(width, height);
     this.tracks = [];
-    console.log(this)
+    console.log(this);
   }
   chooseLocation(width, height, i = 0) {
     let posX = Math.floor(
-      width / 2 + (Math.floor(Math.random() * (5 - -5)) + -5) * 60
+      width / 2 + (Math.floor(Math.random() * (6 - -6)) + -6) * 60
     );
     let posY = Math.floor(
       height / 2 + (Math.floor(Math.random() * (5 - -5)) + -5) * 60
     );
     let coincidences = 0;
-    // let range = 100;
     this.game.stations.forEach(station => {
       let wrongX = station.posX - 100 <= posX && posX < station.posX + 100;
       let wrongY = station.posY - 100 <= posY && posY < station.posY + 100;
@@ -65,8 +64,7 @@ class Station {
   }
 
   drawText() {
-    // this.ctx.font = "15px Verdana";
-    this.ctx.fillText(this.number, this.posX-11, this.posY-1, 35)
+    this.ctx.fillText(this.number, this.posX - 11, this.posY - 1, 35);
   }
 
   addPassenger(passenger) {
@@ -96,7 +94,7 @@ class Station {
     let connectedStations = this.tracks
       .map(track => track.connectedStops)
       .flat();
-    // console.log(this.tracks); 
+    // console.log(this.tracks);
     return connectedStations;
   }
   // connectStation(otherStation) {

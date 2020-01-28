@@ -275,19 +275,8 @@ const Game = {
   },
 
   selectTrack(colour) {
-    this.selectedTrack = this.tracks.find(track => (track.colour = colour));
+    this.selectedTrack = this.tracks.find(track => (track.colour === colour));
   }
-
-  // isCollisionsBottom() {
-  //   return this.obstacles.some(
-  //     obs =>
-  //       this.character._posX + this.character._width >= obs._posX &&
-  //       this.character._posY + this.character._height >= obs._posYBot &&
-  //       this.character._posX <= obs._posX + obs._width &&
-  //       this.character._posY <= obs._posYBot + obs._height
-  //   );
-  //   console.log(this.character._posX);
-  // },
 };
 
 // window.onresize = setDimensions;
