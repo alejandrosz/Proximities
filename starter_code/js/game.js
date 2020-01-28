@@ -31,8 +31,10 @@ const Game = {
     // console.log(this.tracks);
     this.interval = setInterval(() => {
       this.framesCounter++;
+      this.passengers = this.getAllPassengers();
       this.createStationsOnTime();
       this.createPassengersOnTime();
+      this.removePassengersOnTime();
       this.drawAll();
       // this.generateAll();
       // this.moveAll();
@@ -85,6 +87,8 @@ const Game = {
         let selectedStation = this.closestClickedStation(e.clientX, e.clientY);
         if (selectedStation) {
           this.selectedTrack.addStop(selectedStation);
+          this.previousStation = selectedStation;
+          console.log(this.tracks[0]);
         }
       }
     );
@@ -130,16 +134,21 @@ const Game = {
     this.selectedTrack = redLine;
   },
 
+  getAllPassengers() {
+    let allPassengers = this.stations.map(station => station.passengers).flat();
+    return allPassengers;
+  },
+
   createStarterStations() {
     // this.stations= new Array(4).fill(new Station(this.ctx, this.width, this.height))
     let station1 = new Station(this.ctx, this.width, this.height, this);
-    this.stations.push(station1)
+    this.stations.push(station1);
     let station2 = new Station(this.ctx, this.width, this.height, this);
-    this.stations.push(station2)
+    this.stations.push(station2);
     let station3 = new Station(this.ctx, this.width, this.height, this);
-    this.stations.push(station3)
+    this.stations.push(station3);
     let station4 = new Station(this.ctx, this.width, this.height, this);
-    this.stations.push(station4)
+    this.stations.push(station4);
   },
 
   createStationsOnTime() {
@@ -150,7 +159,13 @@ const Game = {
 
   createPassengersOnTime() {
     if (this.framesCounter % 20 === 0) {
-      this.passengers.push(new Passenger(this.ctx, this.stations));
+      new Passenger(this.ctx, this.stations, this);
+    }
+  },
+
+  removePassengersOnTime() {
+    if (this.framesCounter % 30 === 0) {
+      this.passengers.forEach(passenger => passenger.travel());
     }
   },
 

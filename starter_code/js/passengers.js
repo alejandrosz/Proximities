@@ -1,5 +1,6 @@
 class Passenger {
-  constructor(ctx, stations) {
+  constructor(ctx, stations, game) {
+    this.number = game.passengers.length;
     this.ctx = ctx;
     this.width = 10;
     this.height = 10;
@@ -9,8 +10,8 @@ class Passenger {
     this.image = new Image();
     this.station.addPassenger(this);
     this.chooseImage();
-    this.posX = this.station.posX + (this.station.passengers.length-1)*11;
-    this.posY = this.station.posY - 10
+    this.posX = this.station.posX + (this.station.passengers.length - 1) * 11;
+    this.posY = this.station.posY - 10;
   }
 
   chooseImage() {
@@ -33,16 +34,29 @@ class Passenger {
       this.posX, // mas un margen
       this.posY, // mas un margen
       this.width,
-      this.height,
+      this.height
     );
   }
 
-  checkDestination(){
-      this.station.connectedStations // hace un filter para ver si son de su tipo
+  travel() {
+    let choosenStation = this.checkDestination();
+    if (choosenStation) {
+      this.isGone=true
+      this.station.removePassenger(this);
+    }
   }
 
-  travel(){
-      // hace las animaciones correspondientes o desaparece a los 4 segundos de checkear que se puede mover 
+  checkDestination() {
+    let availableStations = this.station.getConnectedStations();
+    let possibleStations = availableStations.filter(
+      station => station.type === this.type
+    );
+    if (possibleStations) {
+      return possibleStations[
+        Math.floor(Math.random() * possibleStations.length) + 1
+      ];
+    } else {
+      return false;
+    }
   }
-
 }

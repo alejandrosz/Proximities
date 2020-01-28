@@ -12,9 +12,9 @@ class Station {
     this.image = new Image();
     this.chooseImage();
     this.chooseLocation(width, height);
-    this.connectedStations = [];
+    this.tracks = [];
   }
-  chooseLocation(width, height) {
+  chooseLocation(width, height, i = 0) {
     let posX = Math.floor(
       width / 2 + (Math.floor(Math.random() * (5 - -5)) + -5) * 60
     );
@@ -22,10 +22,10 @@ class Station {
       height / 2 + (Math.floor(Math.random() * (5 - -5)) + -5) * 60
     );
     let coincidences = 0;
-    let range = 100;
+    // let range = 100;
     this.game.stations.forEach(station => {
-      let wrongX = station.posX - range <= posX && posX < station.posX + range;
-      let wrongY = station.posY - range <= posY && posY < station.posY + range;
+      let wrongX = station.posX - 100 <= posX && posX < station.posX + 100;
+      let wrongY = station.posY - 100 <= posY && posY < station.posY + 100;
       if (wrongX && wrongY) {
         coincidences += 1;
       }
@@ -33,7 +33,9 @@ class Station {
         this.posX = posX;
         this.posY = posY;
       } else {
-        this.chooseLocation(width, height);
+        if (i < 4) {
+          this.chooseLocation(width, height, i + 1);
+        }
       }
     });
   }
@@ -65,19 +67,30 @@ class Station {
     this.passengers.push(passenger);
   }
 
-  removePassengers() {
-    this.passengers -= 1;
+  removePassenger(passenger) {
+    this.passengers = this.passengers.filter(item => item.number !== passenger.number/* item.isGone !== true */)
   }
 
   checkLimit() {
-    if (this.passengers >= 12) {
+    if (this.passengers.length >= 12) {
       return true;
     } else {
       return false;
     }
   }
-
-  connectStation(otherStation) {
-    // la linea llama a esta funcion cuando acaba la linea y pushea a this.connectedStations la nueva estacion
+  addTrack(track) {
+    if (!this.tracks.includes(track)) {
+      this.tracks.push(track);
+    }
   }
+
+  getConnectedStations() {
+    let connectedStations = this.tracks
+      .map(track => track.connectedStops)
+      .flat();
+    return connectedStations;
+  }
+  // connectStation(otherStation) {
+  // la linea llama a esta funcion cuando acaba la linea y pushea a this.connectedStations la nueva estacion
+  // }
 }

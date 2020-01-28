@@ -21,7 +21,7 @@ class Track {
       );
       this.connectedStops.forEach((station, i) => {
         this.ctx.lineTo(station.posX + 20, station.posY + 20);
-        // this.addNode(station, this.connectedStops[i + 1]);
+        this.addNode(station, this.connectedStops[i + 1]);
       });
       this.ctx.stroke();
 
@@ -32,10 +32,10 @@ class Track {
   addNode(station, nextStation) {
     if (nextStation) {
       let newNode = this.calcNode(
-        station.posX,
-        station.posY,
-        nextStation.posX,
-        nextStation.posY
+        station.posX + 20,
+        station.posY + 20,
+        nextStation.posX + 20,
+        nextStation.posY + 20
       );
       if (newNode.x && newNode.y) {
         return this.ctx.lineTo(newNode.x, newNode.y);
@@ -44,27 +44,12 @@ class Track {
   }
 
   calcNode(x1, y1, x2, y2) {
-    // comprobar signos
-    let xdif = Math.abs(x1 - x2);
-    let ydif = Math.abs(y1 - y2);
-    let x;
-    let y;
-    if (xdif < ydif) {
-      x = x2;
-      if (y2 < y1) {
-        y = y2 + 20 + Math.abs(x1 + 20 - x2 + 20);
-      } else {
-        y = y1 + 20 + Math.abs(x1 + 20 - x2 + 20);
-      }
-    } else if (ydif < xdif) {
-      if (x2 < x1) {
-        x = x2 + 20 - Math.abs(y1 + 20 - y2 + 20);
-      } else {
-        x = x1 + 20 - Math.abs(y1 + 20 - y2 + 20);
-      }
-      y = y2;
-    }
-    let newNode = { x, y };
+    const xDif = Math.abs(x1 - x2);
+    const yDif = Math.abs(y1 - y2);
+    const dif = xDif < yDif ? xDif : yDif;
+    const x = x1 + (x1 > x2 ? -1 : 1) * dif;
+    const y = y1 + (y1 > y2 ? -1 : 1) * dif;
+    const newNode = { x, y };
     return newNode;
   }
   addStop(station) {
