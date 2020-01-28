@@ -13,7 +13,7 @@ class Train {
   draw() {
     this.ctx.fillStyle = this.colour;
     this.ctx.fillRect(this.posX, this.posY, this.width, this.height)
-    this.ctx.troke()
+    this.ctx.stroke()
   }
   move() {}
 }

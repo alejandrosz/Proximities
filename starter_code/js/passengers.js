@@ -60,7 +60,7 @@ class Passenger {
     if (possibleStations) {
       // console.log(availableStations)
       return possibleStations[
-        Math.floor(Math.random() * possibleStations.length) + 1
+        Math.floor(Math.random() * possibleStations.length) // aqui habia un +1 sospechoso
       ];
     } else {
       return false;

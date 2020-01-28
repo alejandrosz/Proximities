@@ -8,6 +8,7 @@ const Game = {
   stations: [],
   tracks: [],
   passengers: [],
+  buttons: [],
   // trains: [],
 
   init() {
@@ -28,7 +29,7 @@ const Game = {
 
   start() {
     this.reset();
-    // console.log(this.tracks);
+    console.log(this.buttons);
     this.interval = setInterval(() => {
       this.framesCounter++;
       this.passengers = this.getAllPassengers();
@@ -36,7 +37,6 @@ const Game = {
       this.createPassengersOnTime();
       this.removePassengersOnTime();
       this.drawAll();
-      // this.generateAll();
       // this.moveAll();
     }, 1000 / this.fps);
   },
@@ -45,6 +45,7 @@ const Game = {
     this.background = new Background(this.ctx, this.width, this.height);
     this.createStarterStations();
     this.createStartedTracks();
+    this.generateButtons();
     this.setListeners();
   },
   drawAll() {
@@ -54,6 +55,7 @@ const Game = {
     this.stations.forEach(station => station.drawText());
     this.passengers.forEach(passenger => passenger.draw());
     this.passengers.forEach(passenger => passenger.drawText());
+    this.buttons.forEach(button => button.draw());
     // this.trains.forEach(train => train.draw());
   },
   // },
@@ -81,37 +83,132 @@ const Game = {
       //   }
       // );
       e => {
-        let selectedStation = this.closestClickedStation(e.clientX, e.clientY);
+        let selectedStation = this.closestClickedElement(
+          e.clientX,
+          e.clientY,
+          this.stations,
+          70
+        );
         if (selectedStation) {
           this.selectedTrack.addStop(selectedStation);
           this.previousStation = selectedStation;
           // console.log(this.tracks[0]);
         }
+        let selectedButton = this.closestClickedElement(
+          e.clientX,
+          e.clientY,
+          this.buttons,
+          20
+        );
+        if (selectedButton) {
+          switch (selectedButton.effect) {
+            case "red":
+              this.selectTrack("red");
+              break;
+            case "blue":
+              this.selectTrack("blue");
+              break;
+            case "yellow":
+              this.selectTrack("yellow");
+              break;
+            case "fast":
+              console.log("fast");
+              break;
+            case "play":
+              console.log("play");
+              break;
+            case "pause":
+              console.log("pause");
+              break;
+          }
+        }
       }
     );
 
-
     //   this.canvas.addEventListeners(
-      //   "mouseup",
-      //   (e => {
-      //     let releaseMouseX = e.clientX;
-      //     let releaseMouseY = e.clientY;
-      //     this.dragging = true;
-      //   },
-      //   false).bind(this)
-      // );
+    //   "mouseup",
+    //   (e => {
+    //     let releaseMouseX = e.clientX;
+    //     let releaseMouseY = e.clientY;
+    //     this.dragging = true;
+    //   },
+    //   false).bind(this)
+    // );
   },
 
-  closestClickedStation(mouseX, mouseY) {
-    return this.stations.find(station => {
-      let goodX = station.posX <= mouseX && mouseX < station.posX + 70;
-      let goodY = station.posY <= mouseY && mouseY < station.posY + 70;
+  closestClickedElement(mouseX, mouseY, elements, range) {
+    return elements.find(element => {
+      let goodX = element.posX <= mouseX && mouseX < element.posX + range;
+      let goodY = element.posY <= mouseY && mouseY < element.posY + range;
       if (goodX && goodY) {
-        return station;
+        return element;
       } else {
         return false;
       }
     });
+  },
+  // closestClickedStation(mouseX, mouseY) { EL BUENO
+  //   return this.stations.find(station => {
+  //     let goodX = station.posX <= mouseX && mouseX < station.posX + 70;
+  //     let goodY = station.posY <= mouseY && mouseY < station.posY + 70;
+  //     if (goodX && goodY) {
+  //       return station;
+  //     } else {
+  //       return false;
+  //     }
+  //   });
+  // },
+  generateButtons() {
+    let pauseButton = new Button(
+      this.ctx,
+      this,
+      this.width - 52,
+      this.height / 2 - 75,
+      "pause"
+    );
+    let playButton = new Button(
+      this.ctx,
+      this,
+      this.width - 55,
+      this.height / 2 - 45,
+      "play"
+    );
+    let fastButton = new Button(
+      this.ctx,
+      this,
+      this.width - 50,
+      this.height / 2 - 15,
+      "fast"
+    );
+    let redButton = new Button(
+      this.ctx,
+      this,
+      this.width - 50,
+      this.height / 2 + 15,
+      "red"
+    );
+    let blueButton = new Button(
+      this.ctx,
+      this,
+      this.width - 50,
+      this.height / 2 + 45,
+      "blue"
+    );
+    let yellowButton = new Button(
+      this.ctx,
+      this,
+      this.width - 50,
+      this.height / 2 + 75,
+      "yellow"
+    );
+    this.buttons.push(
+      pauseButton,
+      playButton,
+      fastButton,
+      redButton,
+      blueButton,
+      yellowButton
+    );
   },
 
   createStartedTracks() {
@@ -140,20 +237,20 @@ const Game = {
   },
 
   createStationsOnTime() {
-    if (this.framesCounter % 500 === 0) {
+    if (this.framesCounter % 300 === 0) {
       this.stations.push(new Station(this.ctx, this.width, this.height, this));
     }
   },
 
   createPassengersOnTime() {
-    if (this.framesCounter % 300 === 0) {
+    if (this.framesCounter % 150 === 0) {
       new Passenger(this.ctx, this.stations, this);
     }
   },
 
   removePassengersOnTime() {
     //funciona raro
-    if (this.framesCounter % 150 === 0) {
+    if (this.framesCounter % 100 === 0) {
       this.passengers.forEach(passenger => passenger.travel());
     }
   },
