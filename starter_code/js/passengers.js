@@ -12,7 +12,7 @@ class Passenger {
     this.chooseImage();
     this.posX = this.station.posX + (this.station.passengers.length - 1) * 11;
     this.posY = this.station.posY - 10;
-    console.log(this)
+    console.log(this);
   }
 
   chooseImage() {
@@ -40,14 +40,14 @@ class Passenger {
   }
 
   drawText() {
-    this.ctx.fillText(this.number, this.posX+2, this.posY-2, 15)
+    this.ctx.fillText(this.number, this.posX + 2, this.posY - 2, 15);
   }
 
   travel() {
     let choosenStation = this.checkDestination();
     if (choosenStation) {
-      this.isGone=true
-      console.log("Gone", this)
+      this.isGone = true;
+      console.log("Gone", this);
       this.station.removePassenger(this);
     }
   }
@@ -56,15 +56,14 @@ class Passenger {
     let availableStations = this.station.getConnectedStations();
     let possibleStations = availableStations.filter(
       station => station.type === this.type
-      );
+    );
     if (possibleStations) {
       // console.log(availableStations)
       return possibleStations[
-        Math.floor(Math.random() * possibleStations.length) // aqui habia un +1 sospechoso
+        Math.floor(Math.random() * possibleStations.length)  // aqui habia un +1 sospechoso
       ];
     } else {
       return false;
     }
-  
   }
 }

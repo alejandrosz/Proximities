@@ -9,6 +9,7 @@ const Game = {
   tracks: [],
   passengers: [],
   buttons: [],
+  pickedStations: [],
   // trains: [],
 
   init() {
@@ -89,11 +90,29 @@ const Game = {
           this.stations,
           70
         );
-        if (selectedStation) {
-          this.selectedTrack.addStop(selectedStation);
-          this.previousStation = selectedStation;
-          // console.log(this.tracks[0]);
+        if (selectedStation && this.pickedStations.length < 2) {
+          this.pickedStations.push(selectedStation);
         }
+        if (selectedStation && this.pickedStations.length === 2) {
+          this.selectedTrack.addStop(
+            this.pickedStations[0],
+            this.pickedStations[1]
+          );
+          this.pickedStations = [];
+        }
+
+        // let selectedStation = this.closestClickedElement(
+        //   e.clientX,
+        //   e.clientY,
+        //   this.stations,
+        //   70
+        // );
+        // if (selectedStation) {
+        //   this.selectedTrack.addStop(selectedStation);
+        //   this.previousStation = selectedStation;
+        //   // console.log(this.tracks[0]);
+        // }
+
         let selectedButton = this.closestClickedElement(
           e.clientX,
           e.clientY,

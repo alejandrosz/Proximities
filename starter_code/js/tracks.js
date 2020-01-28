@@ -12,30 +12,38 @@ class Track {
   }
 
   draw() {
-    this.ctx.beginPath(); // Start a new path.
-    this.ctx.lineWidth = "10";
-    this.ctx.lineJoin = "round";
-    this.ctx.strokeStyle = this.colour; // This path is green.
-    if (this.connectedStops.length !== 0) {
-      this.ctx.moveTo(
-        this.connectedStops[0].posX + 20,
-        this.connectedStops[0].posY + 20
-      );
-      this.connectedStops.forEach((station, i) => {
-        this.ctx.lineTo(station.posX + 20, station.posY + 20);
-        this.nodes.push({ x: station.posX + 20, y: station.posY + 20 });
-        this.addNode(station, this.connectedStops[i + 1]);
+    if (this.nodes.length > 1) {
+      this.ctx.beginPath(); // Start a new path.
+      this.ctx.lineWidth = "10";
+      this.ctx.lineJoin = "round";
+      this.ctx.strokeStyle = this.colour; // This path is green.
+      this.ctx.moveTo(this.nodes[0].x + 20, this.nodes[0].y + 20);
+      this.nodes.forEach((node, i) => {
+        if (i > 0) {
+          this.ctx.lineTo(node.x + 20, node.y + 20);
+        }
       });
       this.ctx.stroke();
-
-      this.ctx.closePath(); // Close the current path.
+      this.ctx.closePath();
     }
   }
 
-  
-
-  getPath(){
-
+  getPath() {
+    this.nodes = [];
+    if (this.connectedStops.length !== 0) {
+      this.connectedStops.forEach((station, i) => {
+        this.nodes.push({ x: station.posX, y: station.posY });
+        if (i < this.connectedStops.length - 1) {
+          let node = this.calcNode(
+            station.posX,
+            station.posY,
+            this.connectedStops[i + 1].posX,
+            this.connectedStops[i + 1].posY
+          );
+          this.nodes.push(node);
+        }
+      });
+    }
   }
 
   // getPath() {
@@ -89,12 +97,36 @@ class Track {
     const newNode = { x, y };
     return newNode;
   }
-  addStop(station) {
-    if (!this.connectedStops.includes(station)) {
-      this.connectedStops.push(station);
+  addStop(previousStation, station) {
+    if (this.connectedStops.length === 0) {
+      this.connectedStops.push(previousStation, station);
       station.addTrack(this);
+      previousStation.addTrack(this);
+    } else if (
+      this.connectedStops.length !== 0 &&
+      !this.connectedStops.includes(previousStation)
+    ) {
+      return false;
+    } else if (this.connectedStops[0].number === previousStation.number) {
+      this.connectedStops.unshift(station);
+    } else if (
+      this.connectedStops[this.connectedStops.length - 1].number ===
+      previousStation.number
+    ) {
+      this.connectedStops.push(station);
     }
-    console.log(this);
     this.getPath();
+    console.log(this.nodes);
+    // console.log(this);
+    // this.getPath();
   }
+
+  // addStop(station) {
+  //   if (!this.connectedStops.includes(station)) {
+  //     this.connectedStops.push(station);
+  //     station.addTrack(this);
+  //   }
+  //   console.log(this);
+  //   this.getPath();
+  // }
 }
