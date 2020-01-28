@@ -55,6 +55,7 @@ class Track {
   addStop(station) {
     if (!this.connectedStops.includes(station)) {
       this.connectedStops.push(station);
+      station.addTrack(this)
     }
   }
 }

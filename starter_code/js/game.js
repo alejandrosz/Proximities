@@ -149,7 +149,7 @@ const Game = {
   },
 
   createStationsOnTime() {
-    if (this.framesCounter % 50 === 0) {
+    if (this.framesCounter % 100 === 0) {
       this.stations.push(new Station(this.ctx, this.width, this.height, this));
     }
   },
@@ -161,7 +161,7 @@ const Game = {
   },
 
   removePassengersOnTime() {
-    if (this.framesCounter % 60 === 0) {
+    if (this.framesCounter % 50 === 0) {
       this.passengers.forEach(passenger => passenger.travel());
     }
     

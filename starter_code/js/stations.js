@@ -68,7 +68,9 @@ class Station {
   }
 
   removePassenger(passenger) {
-    this.passengers = this.passengers.filter(item => item.number !== passenger.number/* item.isGone !== true */)
+    this.passengers = this.passengers.filter(
+      item => item.number !== passenger.number /* item.isGone !== true */
+    );
   }
 
   checkLimit() {
@@ -79,7 +81,7 @@ class Station {
     }
   }
   addTrack(track) {
-    if (!this.tracks.includes(track)) {
+    if (!this.tracks.find(t => t.number === track.number)) {
       this.tracks.push(track);
     }
   }
@@ -88,6 +90,7 @@ class Station {
     let connectedStations = this.tracks
       .map(track => track.connectedStops)
       .flat();
+    console.log(this.tracks); // este no
     return connectedStations;
   }
   // connectStation(otherStation) {

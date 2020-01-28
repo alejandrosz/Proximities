@@ -50,14 +50,15 @@ class Passenger {
     let availableStations = this.station.getConnectedStations();
     let possibleStations = availableStations.filter(
       station => station.type === this.type
-    );
+      );
     if (possibleStations) {
+      // console.log(availableStations)
       return possibleStations[
         Math.floor(Math.random() * possibleStations.length) + 1
       ];
     } else {
       return false;
     }
-    console.log(this)
+  
   }
 }
