@@ -94,7 +94,6 @@ class Station {
     let connectedStations = this.tracks
       .map(track => track.connectedStops)
       .flat();
-    // console.log(this.tracks);
     return connectedStations;
   }
   // connectStation(otherStation) {

@@ -3,13 +3,10 @@ class Track {
     this.ctx = ctx;
     this.originStation = undefined;
     this.endStation = undefined;
-    // this.posX = randomX;
-    // this.posY = randomY;
     this.colour = colour; //|| "#FF0000"; en caso de no tener color asignado, es rojo
     this.connectedStops = [];
     this.nodes = [];
     this.offset = 0;
-    // this.path = [];
   }
 
   draw() {
@@ -32,10 +29,10 @@ class Track {
   getPath() {
     switch (this.colour) {
       case "blue":
-        this.offset = 10;
+        this.offset = 8;
         break;
       case "yellow":
-        this.offset = -10;
+        this.offset = -8;
         break;
       default:
         this.offset = 0;
@@ -45,7 +42,7 @@ class Track {
       this.connectedStops.forEach((station, i) => {
         this.nodes.push({
           x: station.posX + this.offset,
-          y: station.posY - this.offset
+          y: station.posY - this.offset*1.1
         });
         if (i < this.connectedStops.length - 1) {
           let node = this.calcNode(
@@ -54,53 +51,25 @@ class Track {
             this.connectedStops[i + 1].posX,
             this.connectedStops[i + 1].posY
           );
-          this.nodes.push({ x: node.x + this.offset, y: node.y - this.offset });
+          this.nodes.push({ x: node.x + this.offset, y: node.y - this.offset*1.1 });
         }
       });
     }
   }
 
-  // getPath() {
-  //   this.path = this.connectedStops.map(station => ({
-  //     x: station.posX,
-  //     y: station.posY
-  //   }));
-  //   console.log(this.path);
-  // }
-
-  // getPath() {
-  //   if (this.connectedStops.length >= 2) {
-  //     let node = undefined;
-  //     this.connectedStops.map((station, i) => {
-  //       let stationPos = { x: station.posX, y: station.posY };
-  //       if (i < this.connectedStops.length-1) {
-  //         node = this.calcNode(
-  //           station.posX,
-  //           station.posX,
-  //           this.connectedStops[i + 1].posX,
-  //           this.connectedStops[i + 1].posX
-  //         );
-  //       }
-  //       this.path.push(stationPos, node);
-  //     });
-  //     console.log(this.connectedStops)
-  //     console.log(this.nodes);
+  // addNode(station, nextStation) {
+  //   if (nextStation) {
+  //     let newNode = this.calcNode(
+  //       station.posX + 20,
+  //       station.posY + 20,
+  //       nextStation.posX + 20,
+  //       nextStation.posY + 20
+  //     );
+  //     if (newNode.x && newNode.y) {
+  //       return this.ctx.lineTo(newNode.x, newNode.y);
+  //     }
   //   }
   // }
-
-  addNode(station, nextStation) {
-    if (nextStation) {
-      let newNode = this.calcNode(
-        station.posX + 20,
-        station.posY + 20,
-        nextStation.posX + 20,
-        nextStation.posY + 20
-      );
-      if (newNode.x && newNode.y) {
-        return this.ctx.lineTo(newNode.x, newNode.y);
-      }
-    }
-  }
 
   calcNode(x1, y1, x2, y2) {
     const xDif = Math.abs(x1 - x2);
@@ -130,17 +99,5 @@ class Track {
       this.connectedStops.push(station);
     }
     this.getPath();
-    console.log(this.nodes);
-    // console.log(this);
-    // this.getPath();
   }
-
-  // addStop(station) {
-  //   if (!this.connectedStops.includes(station)) {
-  //     this.connectedStops.push(station);
-  //     station.addTrack(this);
-  //   }
-  //   console.log(this);
-  //   this.getPath();
-  // }
 }

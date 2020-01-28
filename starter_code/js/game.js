@@ -10,6 +10,7 @@ const Game = {
   passengers: [],
   buttons: [],
   pickedStations: [],
+  multi: 0.9,
   // trains: [],
 
   init() {
@@ -30,7 +31,6 @@ const Game = {
 
   start() {
     this.reset();
-    console.log(this.buttons);
     this.interval = setInterval(() => {
       this.framesCounter++;
       this.passengers = this.getAllPassengers();
@@ -49,6 +49,24 @@ const Game = {
     this.generateButtons();
     this.setListeners();
   },
+  createStarterStations() {
+    // this.stations= new Array(4).fill(new Station(this.ctx, this.width, this.height))
+    let station1 = new Station(this.ctx, this.width, this.height, this);
+    this.stations.push(station1);
+    let station2 = new Station(this.ctx, this.width, this.height, this);
+    this.stations.push(station2);
+    let station3 = new Station(this.ctx, this.width, this.height, this);
+    this.stations.push(station3);
+    let station4 = new Station(this.ctx, this.width, this.height, this);
+    this.stations.push(station4);
+  },
+  createStartedTracks() {
+    let redLine = new Track(this.ctx, "red");
+    let blueLine = new Track(this.ctx, "blue");
+    let yellowLine = new Track(this.ctx, "yellow");
+    this.tracks.push(blueLine, yellowLine, redLine);
+    this.selectedTrack = redLine;
+  },
   drawAll() {
     this.background.draw();
     this.tracks.forEach(track => track.draw());
@@ -59,7 +77,6 @@ const Game = {
     this.buttons.forEach(button => button.draw());
     // this.trains.forEach(train => train.draw());
   },
-  // },
 
   gameOver() {
     clearInterval(this.interval);
@@ -69,90 +86,66 @@ const Game = {
     this.station;
     this.endStation;
 
-    this.canvas.addEventListener(
-      "mousedown",
-      // function() {
+    this.canvas.addEventListener("mousedown", e => {
+      let selectedStation = this.closestClickedElement(
+        e.clientX,
+        e.clientY,
+        this.stations,
+        70
+      );
+      if (selectedStation && this.pickedStations.length < 2) {
+        this.pickedStations.push(selectedStation);
+      }
+      // if (selectedStation && this.pickedStations.length === 2) {
+      //   this.selectedTrack.addStop(
+      //     this.pickedStations[0],
+      //     this.pickedStations[1]
+      //   );
+      //   this.pickedStations = [];
       // }
-      //   (e => {
-      //     let pressMouseX = e.clientX;
-      //     let pressMouseY = e.clientY;
-      //     selectedStation = this.closestClickedStation(pressMouseX, pressMouseY);
-      //     if (selectedStation) {
-      //       this.selectedTrack.addStop(selectedStation);
-      //     }
-      //     this.dragging = true;
-      //   }
-      // );
-      e => {
-        let selectedStation = this.closestClickedElement(
-          e.clientX,
-          e.clientY,
-          this.stations,
-          70
-        );
-        if (selectedStation && this.pickedStations.length < 2) {
-          this.pickedStations.push(selectedStation);
-        }
-        if (selectedStation && this.pickedStations.length === 2) {
-          this.selectedTrack.addStop(
-            this.pickedStations[0],
-            this.pickedStations[1]
-          );
-          this.pickedStations = [];
-        }
 
-        // let selectedStation = this.closestClickedElement(
-        //   e.clientX,
-        //   e.clientY,
-        //   this.stations,
-        //   70
-        // );
-        // if (selectedStation) {
-        //   this.selectedTrack.addStop(selectedStation);
-        //   this.previousStation = selectedStation;
-        //   // console.log(this.tracks[0]);
-        // }
-
-        let selectedButton = this.closestClickedElement(
-          e.clientX,
-          e.clientY,
-          this.buttons,
-          20
-        );
-        if (selectedButton) {
-          switch (selectedButton.effect) {
-            case "red":
-              this.selectTrack("red");
-              break;
-            case "blue":
-              this.selectTrack("blue");
-              break;
-            case "yellow":
-              this.selectTrack("yellow");
-              break;
-            case "fast":
-              console.log("fast");
-              break;
-            case "play":
-              console.log("play");
-              break;
-            case "pause":
-              console.log("pause");
-              break;
-          }
+      let selectedButton = this.closestClickedElement(
+        e.clientX,
+        e.clientY,
+        this.buttons,
+        20
+      );
+      if (selectedButton) {
+        switch (selectedButton.effect) {
+          case "red":
+            this.selectTrack("red");
+            break;
+          case "blue":
+            this.selectTrack("blue");
+            break;
+          case "yellow":
+            this.selectTrack("yellow");
+            break;
+          case "fast":
+            this.upSpeed();
+            break;
+          case "play":
+            this.normalSpeed();
+            break;
+          case "pause":
+            console.log("pause");
+            break;
         }
       }
-    );
+    });
 
-    //   this.canvas.addEventListeners(
-    //   "mouseup",
-    //   (e => {
-    //     let releaseMouseX = e.clientX;
-    //     let releaseMouseY = e.clientY;
-    //     this.dragging = true;
-    //   },
-    //   false).bind(this)
-    // );
+    this.canvas.addEventListener("mouseup", e => {
+      let selectedStation = this.closestClickedElement(
+        e.clientX,
+        e.clientY,
+        this.stations,
+        70
+      );
+      if (selectedStation && this.pickedStations.length === 1) {
+        this.selectedTrack.addStop(this.pickedStations[0], selectedStation);
+      }
+      this.pickedStations = [];
+    });
   },
 
   closestClickedElement(mouseX, mouseY, elements, range) {
@@ -166,17 +159,7 @@ const Game = {
       }
     });
   },
-  // closestClickedStation(mouseX, mouseY) { EL BUENO
-  //   return this.stations.find(station => {
-  //     let goodX = station.posX <= mouseX && mouseX < station.posX + 70;
-  //     let goodY = station.posY <= mouseY && mouseY < station.posY + 70;
-  //     if (goodX && goodY) {
-  //       return station;
-  //     } else {
-  //       return false;
-  //     }
-  //   });
-  // },
+
   generateButtons() {
     let pauseButton = new Button(
       this.ctx,
@@ -229,53 +212,40 @@ const Game = {
       yellowButton
     );
   },
-
-  createStartedTracks() {
-    let redLine = new Track(this.ctx, "red");
-    let blueLine = new Track(this.ctx, "blue");
-    let yellowLine = new Track(this.ctx, "yellow");
-    this.tracks.push(redLine, blueLine, yellowLine);
-    this.selectedTrack = redLine;
+  selectTrack(colour) {
+    this.selectedTrack = this.tracks.find(track => track.colour === colour);
   },
-
   getAllPassengers() {
     let allPassengers = this.stations.map(station => station.passengers).flat();
     return allPassengers;
   },
+  normalSpeed() {
+    this.multi = 0.9;
+    console.log(this.multi);
+  },
 
-  createStarterStations() {
-    // this.stations= new Array(4).fill(new Station(this.ctx, this.width, this.height))
-    let station1 = new Station(this.ctx, this.width, this.height, this);
-    this.stations.push(station1);
-    let station2 = new Station(this.ctx, this.width, this.height, this);
-    this.stations.push(station2);
-    let station3 = new Station(this.ctx, this.width, this.height, this);
-    this.stations.push(station3);
-    let station4 = new Station(this.ctx, this.width, this.height, this);
-    this.stations.push(station4);
+  upSpeed() {
+    this.multi = 0.3;
+    console.log(this.multi);
   },
 
   createStationsOnTime() {
-    if (this.framesCounter % 300 === 0) {
+    if (this.framesCounter % (400 * this.multi) === 0) {
       this.stations.push(new Station(this.ctx, this.width, this.height, this));
     }
   },
 
   createPassengersOnTime() {
-    if (this.framesCounter % 150 === 0) {
+    if (this.framesCounter % (180 * this.multi) === 0) {
       new Passenger(this.ctx, this.stations, this);
     }
   },
 
   removePassengersOnTime() {
     //funciona raro
-    if (this.framesCounter % 100 === 0) {
+    if (this.framesCounter % (120 * this.multi) === 0) {
       this.passengers.forEach(passenger => passenger.travel());
     }
-  },
-
-  selectTrack(colour) {
-    this.selectedTrack = this.tracks.find(track => (track.colour === colour));
   }
 };
 

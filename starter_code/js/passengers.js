@@ -58,7 +58,6 @@ class Passenger {
       station => station.type === this.type
     );
     if (possibleStations) {
-      // console.log(availableStations)
       return possibleStations[
         Math.floor(Math.random() * possibleStations.length)  // aqui habia un +1 sospechoso
       ];
