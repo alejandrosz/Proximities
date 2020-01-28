@@ -55,10 +55,7 @@ const Game = {
     // this.trains.forEach(train => train.draw());
   },
   // moveAll() {
-  // this.character.move();
-  // this.character.jump();
   // this.obstacles.forEach(obs => obs.move());
-  // this.background.move();
   // },
 
   gameOver() {
@@ -88,7 +85,7 @@ const Game = {
         if (selectedStation) {
           this.selectedTrack.addStop(selectedStation);
           this.previousStation = selectedStation;
-          console.log(this.tracks[0]);
+          // console.log(this.tracks[0]);
         }
       }
     );
@@ -158,37 +155,22 @@ const Game = {
   },
 
   createPassengersOnTime() {
-    if (this.framesCounter % 20 === 0) {
+    if (this.framesCounter % 40 === 0) {
       new Passenger(this.ctx, this.stations, this);
     }
   },
 
   removePassengersOnTime() {
-    if (this.framesCounter % 30 === 0) {
+    if (this.framesCounter % 60 === 0) {
       this.passengers.forEach(passenger => passenger.travel());
     }
+    
   },
 
   selectTrack(colour) {
     this.selectedTrack = this.tracks.find(track => (track.colour = colour));
   }
 
-  // generateObstacles() {
-  //   if (this.framesCounter % 90 === 0) {
-  //     this.obstacles.push(new Obstacles(this.ctx, this.canvas.width));
-  //     //   console.log(this.obstacles);
-  //   }
-  // },
-  // isCollisionsTop() {
-  //   return this.obstacles.some(
-  //     obs =>
-  //       this.character._posX + this.character._width >= obs._posX &&
-  //       this.character._posY + this.character._height >= obs._posY &&
-  //       this.character._posX <= obs._posX + obs._width &&
-  //       this.character._posY <= obs._posY + obs._height
-  //   );
-  //   console.log(this.character._posX);
-  // },
 
   // isCollisionsBottom() {
   //   return this.obstacles.some(

@@ -58,5 +58,6 @@ class Passenger {
     } else {
       return false;
     }
+    console.log(this)
   }
 }
