@@ -160,7 +160,7 @@ const Game = {
     }
   },
 
-  removePassengersOnTime() {
+  removePassengersOnTime() { //funciona raro
     if (this.framesCounter % 50 === 0) {
       this.passengers.forEach(passenger => passenger.travel());
     }
