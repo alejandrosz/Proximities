@@ -13,6 +13,7 @@ class Station {
     this.chooseImage();
     this.chooseLocation(width, height);
     this.tracks = [];
+    console.log(this)
   }
   chooseLocation(width, height, i = 0) {
     let posX = Math.floor(
@@ -63,6 +64,11 @@ class Station {
     );
   }
 
+  drawText() {
+    // this.ctx.font = "15px Verdana";
+    this.ctx.fillText(this.number, this.posX-11, this.posY-1, 35)
+  }
+
   addPassenger(passenger) {
     this.passengers.push(passenger);
   }
@@ -90,7 +96,7 @@ class Station {
     let connectedStations = this.tracks
       .map(track => track.connectedStops)
       .flat();
-    console.log(this.tracks); // este no
+    // console.log(this.tracks); 
     return connectedStations;
   }
   // connectStation(otherStation) {

@@ -51,11 +51,11 @@ const Game = {
     this.background.draw();
     this.tracks.forEach(track => track.draw());
     this.stations.forEach(station => station.draw());
+    this.stations.forEach(station => station.drawText());
     this.passengers.forEach(passenger => passenger.draw());
+    this.passengers.forEach(passenger => passenger.drawText());
     // this.trains.forEach(train => train.draw());
   },
-  // moveAll() {
-  // this.obstacles.forEach(obs => obs.move());
   // },
 
   gameOver() {
@@ -90,25 +90,16 @@ const Game = {
       }
     );
 
-    //   this.canvas.addEventListeners(
-    //     "mousemove",
-    //     (e => {
-    //       let currentMouseX = e.clientX;
-    //       let currentMouseY = e.clientY;
-    //       this.dragging = true;
-    //     },
-    //     false).bind(this)
-    //   );
 
     //   this.canvas.addEventListeners(
-    //     "mouseup",
-    //     (e => {
-    //       let releaseMouseX = e.clientX;
-    //       let releaseMouseY = e.clientY;
-    //       this.dragging = true;
-    //     },
-    //     false).bind(this)
-    //   );
+      //   "mouseup",
+      //   (e => {
+      //     let releaseMouseX = e.clientX;
+      //     let releaseMouseY = e.clientY;
+      //     this.dragging = true;
+      //   },
+      //   false).bind(this)
+      // );
   },
 
   closestClickedStation(mouseX, mouseY) {
@@ -149,28 +140,27 @@ const Game = {
   },
 
   createStationsOnTime() {
-    if (this.framesCounter % 100 === 0) {
+    if (this.framesCounter % 500 === 0) {
       this.stations.push(new Station(this.ctx, this.width, this.height, this));
     }
   },
 
   createPassengersOnTime() {
-    if (this.framesCounter % 40 === 0) {
+    if (this.framesCounter % 300 === 0) {
       new Passenger(this.ctx, this.stations, this);
     }
   },
 
-  removePassengersOnTime() { //funciona raro
-    if (this.framesCounter % 50 === 0) {
+  removePassengersOnTime() {
+    //funciona raro
+    if (this.framesCounter % 150 === 0) {
       this.passengers.forEach(passenger => passenger.travel());
     }
-    
   },
 
   selectTrack(colour) {
     this.selectedTrack = this.tracks.find(track => (track.colour = colour));
   }
-
 
   // isCollisionsBottom() {
   //   return this.obstacles.some(
