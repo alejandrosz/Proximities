@@ -1,6 +1,5 @@
 class Passenger {
   constructor(ctx, stations, game) {
-    this.number = game.passengers.length;
     this.ctx = ctx;
     this.width = 10;
     this.height = 10;
@@ -9,6 +8,7 @@ class Passenger {
     this.type = Math.floor(Math.random() * (4 - 1)) + 1; // entre 1 y 3
     this.image = new Image();
     this.station.addPassenger(this);
+    this.number = this.station.passengers.length;
     this.chooseImage();
     this.posX = this.station.posX + (this.station.passengers.length - 1) * 11;
     this.posY = this.station.posY - 10;
@@ -44,8 +44,8 @@ class Passenger {
   }
 
   travel() {
-    let choosenStation = this.checkDestination();
-    if (choosenStation) {
+    // let choosenStation = this.checkDestination();
+    if (this.checkDestination()) {
       this.isGone = true;
       console.log("Gone", this);
       this.station.removePassenger(this);
@@ -58,9 +58,10 @@ class Passenger {
       station => station.type === this.type
     );
     if (possibleStations) {
-      return possibleStations[
-        Math.floor(Math.random() * possibleStations.length)  // aqui habia un +1 sospechoso
-      ];
+      return true;
+      // possibleStations[
+      //   Math.floor(Math.random() * possibleStations.length)+1
+      // ];
     } else {
       return false;
     }

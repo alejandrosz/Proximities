@@ -1,5 +1,3 @@
-//HOLA
-
 const Game = {
   canvas: undefined,
   ctx: undefined,
@@ -9,10 +7,10 @@ const Game = {
   framesCounter: 0,
   stations: [],
   tracks: [],
-  passengers: [],
   buttons: [],
   pickedStations: [],
   multi: 0.9,
+  // passengers: [],
   // trains: [],
 
   init() {
@@ -35,7 +33,7 @@ const Game = {
     this.reset();
     this.interval = setInterval(() => {
       this.framesCounter++;
-      this.passengers = this.getAllPassengers();
+      // this.passengers = this.getAllPassengers();
       this.createStationsOnTime();
       this.createPassengersOnTime();
       this.removePassengersOnTime();
@@ -74,12 +72,16 @@ const Game = {
     this.tracks.forEach(track => track.draw());
     this.stations.forEach(station => {
       station.draw();
-      station.drawText();
+      // station.drawText();
+      station.passengers.forEach(passenger => {
+        passenger.draw();
+        // passenger.drawText();
+      });
     });
-    this.passengers.forEach(passenger => {
-      passenger.draw();
-      passenger.drawText();
-    });
+    // this.passengers.forEach(passenger => {
+    //   passenger.draw();
+    //   passenger.drawText();
+    // });
     this.buttons.forEach(button => button.draw());
     // this.trains.forEach(train => train.draw());
   },
@@ -222,10 +224,10 @@ const Game = {
   selectTrack(colour) {
     this.selectedTrack = this.tracks.find(track => track.colour === colour);
   },
-  getAllPassengers() {
-    let allPassengers = this.stations.map(station => station.passengers).flat();
-    return allPassengers;
-  },
+  // getAllPassengers() {
+  //   let allPassengers = this.stations.map(station => station.passengers).flat();
+  //   return allPassengers;
+  // },
   normalSpeed() {
     this.multi = 0.9;
     console.log(this.multi);
@@ -249,11 +251,20 @@ const Game = {
   },
 
   removePassengersOnTime() {
-    //funciona raro
-    if (this.framesCounter % (120 * this.multi) === 0) {
-      this.passengers.forEach(passenger => passenger.travel());
+    if (this.framesCounter % (500 * this.multi) === 0) {
+      this.stations.forEach(function(station) {
+        station.passengers.forEach(passenger => passenger.travel());
+      });
     }
   }
+  //   //funciona raro
+
+  // this.stations.forEach(
+  //   function(station) {
+  //     if (station.passengers){
+  //   station.passengers.forEach(passenger => passenger.travel())
+  //    }
+  // )
 };
 
 // window.onresize = setDimensions;
