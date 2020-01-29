@@ -7,6 +7,7 @@ class Track {
     this.connectedStops = [];
     this.nodes = [];
     this.offset = 0;
+    this.trains = [];
   }
 
   draw() {
@@ -23,16 +24,21 @@ class Track {
       });
       this.ctx.stroke();
       this.ctx.closePath();
+      this.drawTrains();
     }
+  }
+
+  drawTrains() {
+    this.trains.forEach(train => train.draw());
   }
 
   getPath() {
     switch (this.colour) {
       case "blue":
-        this.offset = 8;
+        this.offset = 9;
         break;
       case "yellow":
-        this.offset = -8;
+        this.offset = -9;
         break;
       default:
         this.offset = 0;
@@ -42,7 +48,7 @@ class Track {
       this.connectedStops.forEach((station, i) => {
         this.nodes.push({
           x: station.posX + this.offset,
-          y: station.posY - this.offset*1.1
+          y: station.posY - this.offset
         });
         if (i < this.connectedStops.length - 1) {
           let node = this.calcNode(
@@ -51,10 +57,11 @@ class Track {
             this.connectedStops[i + 1].posX,
             this.connectedStops[i + 1].posY
           );
-          this.nodes.push({ x: node.x + this.offset, y: node.y - this.offset*1.1 });
+          this.nodes.push({ x: node.x + this.offset, y: node.y - this.offset });
         }
       });
     }
+    console.log(this.nodes)
   }
 
   // addNode(station, nextStation) {
@@ -85,6 +92,7 @@ class Track {
       this.connectedStops.push(previousStation, station);
       station.addTrack(this);
       previousStation.addTrack(this);
+      this.createTrain();
     } else if (
       this.connectedStops.length !== 0 &&
       !this.connectedStops.includes(previousStation)
@@ -92,12 +100,18 @@ class Track {
       return false;
     } else if (this.connectedStops[0].number === previousStation.number) {
       this.connectedStops.unshift(station);
+      station.addTrack(this);
     } else if (
       this.connectedStops[this.connectedStops.length - 1].number ===
       previousStation.number
     ) {
       this.connectedStops.push(station);
+      station.addTrack(this);
     }
     this.getPath();
+  }
+  createTrain() {
+    this.trains.push(new Train(this.ctx, this));
+    console.log("new train");
   }
 }

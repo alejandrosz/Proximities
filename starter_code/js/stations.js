@@ -5,8 +5,8 @@ class Station {
     this.ctx = ctx;
     this.width = 40;
     this.height = 40;
-    this.posX = undefined;
-    this.posY = undefined;
+    this.posX = width/2;
+    this.posY = height/2;
     this.type = Math.floor(Math.random() * (4 - 1)) + 1; // entre 1 y 3
     this.passengers = [];
     this.image = new Image();
@@ -85,7 +85,7 @@ class Station {
     }
   }
   addTrack(track) {
-    if (!this.tracks.find(t => t.number === track.number)) {
+    if (!this.tracks.find(t => t.colour === track.colour)) {
       this.tracks.push(track);
     }
   }

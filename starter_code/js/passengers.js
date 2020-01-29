@@ -44,8 +44,8 @@ class Passenger {
   }
 
   travel() {
-    // let choosenStation = this.checkDestination();
-    if (this.checkDestination()) {
+    let choosenStation = this.checkDestination();
+    if (choosenStation) {
       this.isGone = true;
       console.log("Gone", this);
       this.station.removePassenger(this);
@@ -58,10 +58,9 @@ class Passenger {
       station => station.type === this.type
     );
     if (possibleStations) {
-      return true;
-      // possibleStations[
-      //   Math.floor(Math.random() * possibleStations.length)+1
-      // ];
+      return possibleStations[
+        Math.floor(Math.random() * possibleStations.length) // aqui habia un +1 sospechoso
+      ];
     } else {
       return false;
     }

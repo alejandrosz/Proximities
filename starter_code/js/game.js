@@ -10,7 +10,6 @@ const Game = {
   buttons: [],
   pickedStations: [],
   multi: 0.9,
-  // passengers: [],
   // trains: [],
 
   init() {
@@ -33,7 +32,6 @@ const Game = {
     this.reset();
     this.interval = setInterval(() => {
       this.framesCounter++;
-      // this.passengers = this.getAllPassengers();
       this.createStationsOnTime();
       this.createPassengersOnTime();
       this.removePassengersOnTime();
@@ -44,21 +42,18 @@ const Game = {
 
   reset() {
     this.background = new Background(this.ctx, this.width, this.height);
-    this.createStarterStations();
     this.createStarterTracks();
     this.generateButtons();
+    this.createStarterStations();
     this.setListeners();
   },
   createStarterStations() {
-    // this.stations= new Array(4).fill(new Station(this.ctx, this.width, this.height))
     let station1 = new Station(this.ctx, this.width, this.height, this);
     this.stations.push(station1);
     let station2 = new Station(this.ctx, this.width, this.height, this);
     this.stations.push(station2);
     let station3 = new Station(this.ctx, this.width, this.height, this);
     this.stations.push(station3);
-    let station4 = new Station(this.ctx, this.width, this.height, this);
-    this.stations.push(station4);
   },
   createStarterTracks() {
     let redLine = new Track(this.ctx, "red");
@@ -67,23 +62,21 @@ const Game = {
     this.tracks.push(blueLine, yellowLine, redLine);
     this.selectedTrack = redLine;
   },
+
   drawAll() {
     this.background.draw();
-    this.tracks.forEach(track => track.draw());
+    this.tracks.forEach(track => {
+      track.draw();
+    });
     this.stations.forEach(station => {
       station.draw();
-      // station.drawText();
+      station.drawText();
       station.passengers.forEach(passenger => {
         passenger.draw();
-        // passenger.drawText();
+        passenger.drawText();
       });
     });
-    // this.passengers.forEach(passenger => {
-    //   passenger.draw();
-    //   passenger.drawText();
-    // });
     this.buttons.forEach(button => button.draw());
-    // this.trains.forEach(train => train.draw());
   },
 
   gameOver() {
@@ -136,7 +129,7 @@ const Game = {
             this.normalSpeed();
             break;
           case "pause":
-            console.log("pause");
+            this.pause();
             break;
         }
       }
@@ -224,18 +217,17 @@ const Game = {
   selectTrack(colour) {
     this.selectedTrack = this.tracks.find(track => track.colour === colour);
   },
-  // getAllPassengers() {
-  //   let allPassengers = this.stations.map(station => station.passengers).flat();
-  //   return allPassengers;
-  // },
+
+  pause() {
+    this.multi = 10000000;
+  },
+
   normalSpeed() {
     this.multi = 0.9;
-    console.log(this.multi);
   },
 
   upSpeed() {
     this.multi = 0.3;
-    console.log(this.multi);
   },
 
   createStationsOnTime() {
@@ -251,7 +243,7 @@ const Game = {
   },
 
   removePassengersOnTime() {
-    if (this.framesCounter % (500 * this.multi) === 0) {
+    if (this.framesCounter % (120 * this.multi) === 0) {
       this.stations.forEach(function(station) {
         station.passengers.forEach(passenger => passenger.travel());
       });
