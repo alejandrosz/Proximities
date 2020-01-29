@@ -1,3 +1,5 @@
+//HOLA
+
 const Game = {
   canvas: undefined,
   ctx: undefined,
