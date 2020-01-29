@@ -36,7 +36,7 @@ const Game = {
       this.createPassengersOnTime();
       this.removePassengersOnTime();
       this.drawAll();
-      // this.moveAll();
+      this.moveAll();
     }, 1000 / this.fps);
   },
 
@@ -78,7 +78,9 @@ const Game = {
     });
     this.buttons.forEach(button => button.draw());
   },
-
+  moveAll(){
+    this.tracks.forEach(track => track.trains.forEach(train => train.move()))
+  },
   gameOver() {
     clearInterval(this.interval);
   },

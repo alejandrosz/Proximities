@@ -61,7 +61,7 @@ class Track {
         }
       });
     }
-    console.log(this.nodes)
+    console.log(this.nodes);
   }
 
   // addNode(station, nextStation) {
@@ -92,7 +92,6 @@ class Track {
       this.connectedStops.push(previousStation, station);
       station.addTrack(this);
       previousStation.addTrack(this);
-      this.createTrain();
     } else if (
       this.connectedStops.length !== 0 &&
       !this.connectedStops.includes(previousStation)
@@ -109,6 +108,7 @@ class Track {
       station.addTrack(this);
     }
     this.getPath();
+    this.createTrain();
   }
   createTrain() {
     this.trains.push(new Train(this.ctx, this));
