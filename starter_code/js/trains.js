@@ -17,59 +17,59 @@ class Train {
   }
 
   move() {
-    console.log(this.nodes)
+    console.log("nodes del tren", this.nodes)
     // this.getInterPoints({ x: 100, y: 100 }, { x: 300, y: 300 }, 10);
-    this.nodes.forEach(function(node, idx) {
-      if (idx < this.nodes.length) {
-        let x1 = node.x;
-        let y1 = node.y;
-        let x2 = this.nodes[idx + 1].x;
-        let y2 = this.nodes[idx + 1].y;
-        let points = { xa: x1, ya: y1, xb: x2, yb: y2 };
-        switch (points) {
-          // case 00:00
-          case points.xa === points.xb && points.ya > points.yb:
-            this.posX = this.posX;
-            this.posY -= 1;
-            break;
-          //case 13:30
-          case points.xa < points.xb && points.ya > points.yb:
-            this.posX += 1;
-            this.posY -= 1;
-            break;
-          //case 15:00
-          case points.xa < points.xb && points.ya === points.yb:
-            this.posX += 1;
-            this.posY = this.posY;
-            break;
-          //case 16:30
-          case points.xa < points.xb && points.ya < points.yb:
-            this.posX += 1;
-            this.posY += 1;
-            break;
-          //case 18:00
-          case points.xa === points.xb && points.ya < points.yb:
-            this.posX = this.posX;
-            this.posY += 1;
-            break;
-          //case 19:30
-          case points.xa > points.xb && points.ya < points.yb:
-            this.posX -= 1;
-            this.posY += 1;
-            break;
-          //case 21:00
-          case points.xa > points.xb && points.ya === points.yb:
-            this.posX -= 1;
-            this.posY = this.posY;
-            break;
-          //case 22:30
-          case points.xa > points.xb && points.ya > points.yb:
-            this.posX -= 1;
-            this.posY -= 1;
-            break;
-        }
-      }
-    });
+    // this.nodes.forEach(function(node, idx) {
+    //   if (idx < this.nodes.length) {
+    //     let x1 = node.x;
+    //     let y1 = node.y;
+    //     let x2 = this.nodes[idx + 1].x;
+    //     let y2 = this.nodes[idx + 1].y;
+    //     let points = { xa: x1, ya: y1, xb: x2, yb: y2 };
+    //     switch (points) {
+    //       // case 00:00
+    //       case points.xa === points.xb && points.ya > points.yb:
+    //         this.posX = this.posX;
+    //         this.posY -= 1;
+    //         break;
+    //       //case 13:30
+    //       case points.xa < points.xb && points.ya > points.yb:
+    //         this.posX += 1;
+    //         this.posY -= 1;
+    //         break;
+    //       //case 15:00
+    //       case points.xa < points.xb && points.ya === points.yb:
+    //         this.posX += 1;
+    //         this.posY = this.posY;
+    //         break;
+    //       //case 16:30
+    //       case points.xa < points.xb && points.ya < points.yb:
+    //         this.posX += 1;
+    //         this.posY += 1;
+    //         break;
+    //       //case 18:00
+    //       case points.xa === points.xb && points.ya < points.yb:
+    //         this.posX = this.posX;
+    //         this.posY += 1;
+    //         break;
+    //       //case 19:30
+    //       case points.xa > points.xb && points.ya < points.yb:
+    //         this.posX -= 1;
+    //         this.posY += 1;
+    //         break;
+    //       //case 21:00
+    //       case points.xa > points.xb && points.ya === points.yb:
+    //         this.posX -= 1;
+    //         this.posY = this.posY;
+    //         break;
+    //       //case 22:30
+    //       case points.xa > points.xb && points.ya > points.yb:
+    //         this.posX -= 1;
+    //         this.posY -= 1;
+    //         break;
+    //     }
+    //   }
+    // });
   }
 }
 

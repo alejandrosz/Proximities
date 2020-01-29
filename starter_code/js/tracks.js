@@ -8,6 +8,7 @@ class Track {
     this.nodes = [];
     this.offset = 0;
     this.trains = [];
+    this.createFirstTrain()
   }
 
   draw() {
@@ -45,6 +46,7 @@ class Track {
     }
     this.nodes = [];
     if (this.connectedStops.length !== 0) {
+      this.createTrain();
       this.connectedStops.forEach((station, i) => {
         this.nodes.push({
           x: station.posX + this.offset,
@@ -58,7 +60,6 @@ class Track {
             this.connectedStops[i + 1].posY
           );
           this.nodes.push({ x: node.x + this.offset, y: node.y - this.offset });
-          this.createTrain();
         }
       });
     }
@@ -89,11 +90,18 @@ class Track {
     const newNode = { x, y };
     return newNode;
   }
+  // createFirstTrain() {
+  //   if (this.connectedStops.length === 2 && this.trains.length === 0) {
+  //     this.createTrain;
+  //   }
+  // }
+
   addStop(previousStation, station) {
     if (this.connectedStops.length === 0) {
       this.connectedStops.push(previousStation, station);
       station.addTrack(this);
       previousStation.addTrack(this);
+      this.createTrain();
     } else if (
       this.connectedStops.length !== 0 &&
       !this.connectedStops.includes(previousStation)
@@ -112,13 +120,9 @@ class Track {
     this.getPath();
   }
   createTrain() {
-    let train = new Train(
-      this.ctx,
-      this.nodes,
-      this.connectedStops,
-      this.colour
+    this.trains.push(
+      new Train(this.ctx, this.nodes, this.connectedStops, this.colour)
     );
-    this.trains.push(train);
     console.log("new train");
   }
 }
