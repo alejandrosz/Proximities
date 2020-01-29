@@ -58,10 +58,12 @@ class Track {
             this.connectedStops[i + 1].posY
           );
           this.nodes.push({ x: node.x + this.offset, y: node.y - this.offset });
+          this.createTrain();
         }
       });
     }
-    console.log(this.nodes);
+
+    console.log("nodes del track", this.nodes);
   }
 
   // addNode(station, nextStation) {
@@ -108,10 +110,15 @@ class Track {
       station.addTrack(this);
     }
     this.getPath();
-    this.createTrain();
   }
   createTrain() {
-    this.trains.push(new Train(this.ctx, this));
+    let train = new Train(
+      this.ctx,
+      this.nodes,
+      this.connectedStops,
+      this.colour
+    );
+    this.trains.push(train);
     console.log("new train");
   }
 }

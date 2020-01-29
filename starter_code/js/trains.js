@@ -1,14 +1,13 @@
 class Train {
-  constructor(ctx, track, time) {
+  constructor(ctx, nodes, connectedStops, colour) {
     this.ctx = ctx;
-    this.track = track;
+    // this.track = track;
     this.width = 30;
     this.height = 30;
-    this.nodes = track.nodes;
-    this.posX = this.track.connectedStops[0].posX;
-    this.posY = this.track.connectedStops[0].posY;
-    this.colour = track.colour;
-    this.time = time;
+    this.nodes = nodes;
+    this.posX = connectedStops[0].posX;
+    this.posY = connectedStops[0].posY;
+    this.colour = colour;
     this.velocity = undefined;
   }
   draw() {
@@ -18,6 +17,7 @@ class Train {
   }
 
   move() {
+    console.log(this.nodes)
     // this.getInterPoints({ x: 100, y: 100 }, { x: 300, y: 300 }, 10);
     this.nodes.forEach(function(node, idx) {
       if (idx < this.nodes.length) {

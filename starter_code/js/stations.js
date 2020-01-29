@@ -13,7 +13,7 @@ class Station {
     this.chooseImage();
     this.chooseLocation(width, height);
     this.tracks = [];
-    console.log(this);
+    // console.log(this);
   }
   chooseLocation(width, height, i = 0) {
     let posX = Math.floor(

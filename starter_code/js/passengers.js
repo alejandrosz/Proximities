@@ -12,7 +12,7 @@ class Passenger {
     this.chooseImage();
     this.posX = this.station.posX + (this.station.passengers.length - 1) * 11;
     this.posY = this.station.posY - 10;
-    console.log(this);
+    // console.log(this);
   }
 
   chooseImage() {
