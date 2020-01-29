@@ -45,7 +45,7 @@ const Game = {
   reset() {
     this.background = new Background(this.ctx, this.width, this.height);
     this.createStarterStations();
-    this.createStartedTracks();
+    this.createStarterTracks();
     this.generateButtons();
     this.setListeners();
   },
@@ -60,7 +60,7 @@ const Game = {
     let station4 = new Station(this.ctx, this.width, this.height, this);
     this.stations.push(station4);
   },
-  createStartedTracks() {
+  createStarterTracks() {
     let redLine = new Track(this.ctx, "red");
     let blueLine = new Track(this.ctx, "blue");
     let yellowLine = new Track(this.ctx, "yellow");
@@ -70,10 +70,14 @@ const Game = {
   drawAll() {
     this.background.draw();
     this.tracks.forEach(track => track.draw());
-    this.stations.forEach(station => station.draw());
-    this.stations.forEach(station => station.drawText());
-    this.passengers.forEach(passenger => passenger.draw());
-    this.passengers.forEach(passenger => passenger.drawText());
+    this.stations.forEach(station => {
+      station.draw();
+      station.drawText();
+    });
+    this.passengers.forEach(passenger => {
+      passenger.draw();
+      passenger.drawText();
+    });
     this.buttons.forEach(button => button.draw());
     // this.trains.forEach(train => train.draw());
   },
@@ -212,6 +216,7 @@ const Game = {
       yellowButton
     );
   },
+
   selectTrack(colour) {
     this.selectedTrack = this.tracks.find(track => track.colour === colour);
   },

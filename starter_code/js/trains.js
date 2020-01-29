@@ -16,4 +16,16 @@ class Train {
     this.ctx.stroke()
   }
   move() {}
+
+  // getInterPoints(pos, nextPos){
+  //   const steps = 10;
+  //   const xStep= (pos.x-nextPos.x)/steps;
+  //   const yStep= (pos.y-nextPos.y)/steps;
+  //   const interpolatedPoints = [];
+  //   for(let i=0;i<steps;i++){
+  //     const newPos ={x:pos.x + xStep,y:pos.y + yStep}
+  //     interpolatedPoints.push(newPos)
+  //   }
+  //   return interpolatedPoints
+  // }
 }
