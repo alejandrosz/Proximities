@@ -20,8 +20,8 @@ const Game = {
   },
 
   setDimensions() {
-    this.width = window.innerWidth;
-    this.height = window.innerHeight;
+    this.width = window.innerWidth%2===0? window.innerWidth : window.innerWidth -1;
+    this.height = window.innerHeight%2===0? window.innerHeight : window.innerHeight -1;
     this.canvas.width = this.width;
     this.canvas.height = this.height;
     this.canvas.setAttribute("width", this.width);

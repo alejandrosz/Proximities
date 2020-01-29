@@ -1,5 +1,5 @@
 class Train {
-  constructor(ctx, nodes, connectedStops, colour) {
+  constructor(ctx, nodes, connectedStops, colour, track) {
     this.ctx = ctx;
     // this.track = track;
     this.width = 30;
@@ -9,6 +9,8 @@ class Train {
     this.posY = connectedStops[0].posY;
     this.colour = colour;
     this.velocity = undefined;
+    this.nextNode = 0;
+    this.track = track;
   }
   draw() {
     this.ctx.fillStyle = this.colour;
@@ -17,59 +19,59 @@ class Train {
   }
 
   move() {
-    console.log("nodes del tren", this.nodes)
+    const nodes = this.track.nodes; // this.nodes;
+    const length = nodes.length;
+    console.log('nodes del tren',nodes, length);
     // this.getInterPoints({ x: 100, y: 100 }, { x: 300, y: 300 }, 10);
-    // this.nodes.forEach(function(node, idx) {
-    //   if (idx < this.nodes.length) {
-    //     let x1 = node.x;
-    //     let y1 = node.y;
-    //     let x2 = this.nodes[idx + 1].x;
-    //     let y2 = this.nodes[idx + 1].y;
-    //     let points = { xa: x1, ya: y1, xb: x2, yb: y2 };
-    //     switch (points) {
-    //       // case 00:00
-    //       case points.xa === points.xb && points.ya > points.yb:
-    //         this.posX = this.posX;
-    //         this.posY -= 1;
-    //         break;
-    //       //case 13:30
-    //       case points.xa < points.xb && points.ya > points.yb:
-    //         this.posX += 1;
-    //         this.posY -= 1;
-    //         break;
-    //       //case 15:00
-    //       case points.xa < points.xb && points.ya === points.yb:
-    //         this.posX += 1;
-    //         this.posY = this.posY;
-    //         break;
-    //       //case 16:30
-    //       case points.xa < points.xb && points.ya < points.yb:
-    //         this.posX += 1;
-    //         this.posY += 1;
-    //         break;
-    //       //case 18:00
-    //       case points.xa === points.xb && points.ya < points.yb:
-    //         this.posX = this.posX;
-    //         this.posY += 1;
-    //         break;
-    //       //case 19:30
-    //       case points.xa > points.xb && points.ya < points.yb:
-    //         this.posX -= 1;
-    //         this.posY += 1;
-    //         break;
-    //       //case 21:00
-    //       case points.xa > points.xb && points.ya === points.yb:
-    //         this.posX -= 1;
-    //         this.posY = this.posY;
-    //         break;
-    //       //case 22:30
-    //       case points.xa > points.xb && points.ya > points.yb:
-    //         this.posX -= 1;
-    //         this.posY -= 1;
-    //         break;
-    //     }
-    //   }
-    // });
+
+    //nodes.forEach((node, idx) => {
+    const idx = this.nextNode;
+    if (idx < length - 1) {
+      let x1 = nodes[idx].x;
+      let y1 = nodes[idx].y;
+      let x2 = nodes[idx + 1].x;
+      let y2 = nodes[idx + 1].y;
+      let points = { xa: x1, ya: y1, xb: x2, yb: y2 };
+
+      // case 00:00
+      if (points.xa === points.xb && points.ya > points.yb) {
+        console.log('case 1');
+        this.posX = this.posX;
+        this.posY -= 1;
+      } else if (points.xa < points.xb && points.ya > points.yb) {
+        console.log('case 2');
+        this.posX += 1;
+        this.posY -= 1;
+      } else if (points.xa < points.xb && points.ya === points.yb) {
+        console.log('case 3');
+        this.posX += 1;
+        this.posY = this.posY;
+      } else if (points.xa < points.xb && points.ya < points.yb) {
+        console.log('case 1');
+        this.posX += 1;
+        this.posY += 1;
+      } else if (points.xa === points.xb && points.ya < points.yb) {
+        console.log('case 1');
+        this.posX = this.posX;
+        this.posY += 1;
+      } else if (points.xa > points.xb && points.ya < points.yb) {
+        console.log('case 1');
+        this.posX -= 1;
+        this.posY += 1;
+      } else if (points.xa > points.xb && points.ya === points.yb) {
+        console.log('case 1');
+        this.posX -= 1;
+        this.posY = this.posY;
+      } else if (points.xa > points.xb && points.ya > points.yb) {
+        console.log('case 1');
+        this.posX -= 1;
+        this.posY -= 1;
+      }
+      if (this.posX === points.xb && this.posY === points.yb) {
+        this.nextNode += 1;
+      }
+    }
+
   }
 }
 

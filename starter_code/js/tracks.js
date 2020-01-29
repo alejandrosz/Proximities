@@ -8,14 +8,14 @@ class Track {
     this.nodes = [];
     this.offset = 0;
     this.trains = [];
-    this.createFirstTrain()
+    // this.createFirstTrain()
   }
 
   draw() {
     if (this.nodes.length > 1) {
       this.ctx.beginPath(); // Start a new path.
-      this.ctx.lineWidth = "10";
-      this.ctx.lineJoin = "round";
+      this.ctx.lineWidth = '10';
+      this.ctx.lineJoin = 'round';
       this.ctx.strokeStyle = this.colour; // This path is green.
       this.ctx.moveTo(this.nodes[0].x + 20, this.nodes[0].y + 20);
       this.nodes.forEach((node, i) => {
@@ -26,6 +26,7 @@ class Track {
       this.ctx.stroke();
       this.ctx.closePath();
       this.drawTrains();
+      console.log('this.trains', this.trains);
     }
   }
 
@@ -35,10 +36,10 @@ class Track {
 
   getPath() {
     switch (this.colour) {
-      case "blue":
+      case 'blue':
         this.offset = 9;
         break;
-      case "yellow":
+      case 'yellow':
         this.offset = -9;
         break;
       default:
@@ -46,7 +47,7 @@ class Track {
     }
     this.nodes = [];
     if (this.connectedStops.length !== 0) {
-      this.createTrain();
+      // this.createTrain();
       this.connectedStops.forEach((station, i) => {
         this.nodes.push({
           x: station.posX + this.offset,
@@ -64,7 +65,7 @@ class Track {
       });
     }
 
-    console.log("nodes del track", this.nodes);
+    console.log('nodes del track', this.nodes);
   }
 
   // addNode(station, nextStation) {
@@ -101,28 +102,25 @@ class Track {
       this.connectedStops.push(previousStation, station);
       station.addTrack(this);
       previousStation.addTrack(this);
-      this.createTrain();
-    } else if (
-      this.connectedStops.length !== 0 &&
-      !this.connectedStops.includes(previousStation)
-    ) {
+      // this.createTrain();
+    } else if (this.connectedStops.length !== 0 && !this.connectedStops.includes(previousStation)) {
       return false;
     } else if (this.connectedStops[0].number === previousStation.number) {
       this.connectedStops.unshift(station);
       station.addTrack(this);
     } else if (
-      this.connectedStops[this.connectedStops.length - 1].number ===
-      previousStation.number
+      this.connectedStops[this.connectedStops.length - 1].number === previousStation.number
     ) {
       this.connectedStops.push(station);
       station.addTrack(this);
     }
     this.getPath();
+    if (this.trains.length === 0) {
+      this.createTrain();
+    }
   }
   createTrain() {
-    this.trains.push(
-      new Train(this.ctx, this.nodes, this.connectedStops, this.colour)
-    );
-    console.log("new train");
+    this.trains.push(new Train(this.ctx, this.nodes, this.connectedStops, this.colour, this));
+    console.log('new train');
   }
 }
