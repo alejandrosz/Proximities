@@ -70,10 +70,10 @@ const Game = {
     });
     this.stations.forEach(station => {
       station.draw();
-      station.drawText();
+      // station.drawText();
       station.passengers.forEach(passenger => {
         passenger.draw();
-        passenger.drawText();
+        // passenger.drawText();
       });
     });
     this.buttons.forEach(button => button.draw());

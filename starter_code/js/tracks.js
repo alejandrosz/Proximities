@@ -35,16 +35,16 @@ class Track {
   }
 
   getPath() {
-    switch (this.colour) {
-      case 'blue':
-        this.offset = 9;
-        break;
-      case 'yellow':
-        this.offset = -9;
-        break;
-      default:
-        this.offset = 0;
-    }
+    // switch (this.colour) {
+    //   case 'blue':
+    //     this.offset = 9;
+    //     break;
+    //   case 'yellow':
+    //     this.offset = -9;
+    //     break;
+    //   default:
+    //     this.offset = 0;
+    // }
     this.nodes = [];
     if (this.connectedStops.length !== 0) {
       // this.createTrain();
@@ -107,11 +107,13 @@ class Track {
       return false;
     } else if (this.connectedStops[0].number === previousStation.number) {
       this.connectedStops.unshift(station);
+      //this.trains.forEach( si va en la direccion 1 train.nextIndex += 1, si no, no haces nada)
       station.addTrack(this);
     } else if (
       this.connectedStops[this.connectedStops.length - 1].number === previousStation.number
     ) {
       this.connectedStops.push(station);
+      //this.trains.forEach, si va en la direccion -1, le restas un indice, y si no no haces nada
       station.addTrack(this);
     }
     this.getPath();

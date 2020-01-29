@@ -11,6 +11,8 @@ class Train {
     this.velocity = undefined;
     this.nextNode = 0;
     this.track = track;
+    this.offset = 0;
+    this.direction = 1;
   }
   draw() {
     this.ctx.fillStyle = this.colour;
@@ -19,59 +21,82 @@ class Train {
   }
 
   move() {
-    const nodes = this.track.nodes; // this.nodes;
-    const length = nodes.length;
-    console.log('nodes del tren',nodes, length);
-    // this.getInterPoints({ x: 100, y: 100 }, { x: 300, y: 300 }, 10);
+    let nodes = this.track.nodes.concat(
+      [...this.track.nodes].reverse().slice(1, this.track.nodes.length)
+    );
+    // : this.track.nodes; /* .reverse() */ // this.nodes;
+    let length = nodes.length;
+     this.length = length;
 
+    if (this.length < this.track.nodes.length) {
+      console.log("ADDED STOP");
+      this.nextNode = 0
+      this.posX = nodes[0].x;
+      this.posY = nodes[0].y;
+    }
+
+    console.log("nodes del tren", nodes, length);
+    // this.getInterPoints({ x: 100, y: 100 }, { x: 300, y: 300 }, 10);
+    // switch (this.track.colour) {
+    //   case 'blue':
+    //     this.offset = 9;
+    //     break;
+    //   case 'yellow':
+    //     this.offset = -9;
+    //     break;
+    //   default:
+    //     this.offset = 0;
+    // }
     //nodes.forEach((node, idx) => {
-    const idx = this.nextNode;
-    if (idx < length - 1) {
+    let idx = this.nextNode;
+    // console.log("primero", idx);
+    if (idx < length - 1 && idx >= 0) {
       let x1 = nodes[idx].x;
       let y1 = nodes[idx].y;
       let x2 = nodes[idx + 1].x;
       let y2 = nodes[idx + 1].y;
-      let points = { xa: x1, ya: y1, xb: x2, yb: y2 };
 
-      // case 00:00
-      if (points.xa === points.xb && points.ya > points.yb) {
-        console.log('case 1');
+      let points = { xa: x1, ya: y1, xb: x2, yb: y2 };
+      if (points.xa === points.xb && points.ya === points.yb) {
+        //this.nextNode += 1;
+      } else if (points.xa === points.xb && points.ya > points.yb) {
         this.posX = this.posX;
         this.posY -= 1;
       } else if (points.xa < points.xb && points.ya > points.yb) {
-        console.log('case 2');
         this.posX += 1;
         this.posY -= 1;
       } else if (points.xa < points.xb && points.ya === points.yb) {
-        console.log('case 3');
         this.posX += 1;
         this.posY = this.posY;
       } else if (points.xa < points.xb && points.ya < points.yb) {
-        console.log('case 1');
         this.posX += 1;
         this.posY += 1;
       } else if (points.xa === points.xb && points.ya < points.yb) {
-        console.log('case 1');
         this.posX = this.posX;
         this.posY += 1;
       } else if (points.xa > points.xb && points.ya < points.yb) {
-        console.log('case 1');
         this.posX -= 1;
         this.posY += 1;
       } else if (points.xa > points.xb && points.ya === points.yb) {
-        console.log('case 1');
         this.posX -= 1;
         this.posY = this.posY;
       } else if (points.xa > points.xb && points.ya > points.yb) {
-        console.log('case 1');
         this.posX -= 1;
         this.posY -= 1;
       }
       if (this.posX === points.xb && this.posY === points.yb) {
         this.nextNode += 1;
+        /* this.posX = node[0].x;
+        this.posY = node[0].y; */
       }
     }
-
+    if (idx === length - 1 || idx < 0) {
+      this.nextNode = 0;
+      this.posX = node[0].x;
+      this.posY = node[0].y;
+      //   this.direction *= -1;
+    }
+    console.log(this.nextNode);
   }
 }
 
