@@ -14,8 +14,8 @@ class Track {
   draw() {
     if (this.nodes.length > 1) {
       this.ctx.beginPath(); // Start a new path.
-      this.ctx.lineWidth = '10';
-      this.ctx.lineJoin = 'round';
+      this.ctx.lineWidth = "10";
+      this.ctx.lineJoin = "round";
       this.ctx.strokeStyle = this.colour; // This path is green.
       this.ctx.moveTo(this.nodes[0].x + 20, this.nodes[0].y + 20);
       this.nodes.forEach((node, i) => {
@@ -26,7 +26,7 @@ class Track {
       this.ctx.stroke();
       this.ctx.closePath();
       this.drawTrains();
-      console.log('this.trains', this.trains);
+      // console.log("this.trains", this.trains);
     }
   }
 
@@ -65,7 +65,27 @@ class Track {
       });
     }
 
-    console.log('nodes del track', this.nodes);
+    // console.log("nodes del track", this.nodes);
+  }
+
+  totalLength() {
+    let long = this.nodes
+      .map((node, i) => {
+        if (i < this.nodes.length - 1) {
+          let x1 = node.x;
+          let y1 = node.y;
+          let x2 = this.nodes[i + 1].x;
+          let y2 = this.nodes[i + 1].y;
+          let partialLength = Math.sqrt(
+            Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2)
+          );
+          return partialLength;
+        } else {
+          return 0;
+        }
+      })
+      .reduce((acc, current) => acc + current);
+    return long;
   }
 
   // addNode(station, nextStation) {
@@ -103,26 +123,34 @@ class Track {
       station.addTrack(this);
       previousStation.addTrack(this);
       // this.createTrain();
-    } else if (this.connectedStops.length !== 0 && !this.connectedStops.includes(previousStation)) {
+    } else if (
+      this.connectedStops.length !== 0 &&
+      !this.connectedStops.includes(previousStation)
+    ) {
       return false;
     } else if (this.connectedStops[0].number === previousStation.number) {
       this.connectedStops.unshift(station);
       //this.trains.forEach( si va en la direccion 1 train.nextIndex += 1, si no, no haces nada)
       station.addTrack(this);
     } else if (
-      this.connectedStops[this.connectedStops.length - 1].number === previousStation.number
+      this.connectedStops[this.connectedStops.length - 1].number ===
+      previousStation.number
     ) {
       this.connectedStops.push(station);
       //this.trains.forEach, si va en la direccion -1, le restas un indice, y si no no haces nada
       station.addTrack(this);
     }
     this.getPath();
+    let longitud = this.totalLength();
+    console.log(longitud);
     if (this.trains.length === 0) {
       this.createTrain();
     }
   }
   createTrain() {
-    this.trains.push(new Train(this.ctx, this.nodes, this.connectedStops, this.colour, this));
-    console.log('new train');
+    this.trains.push(
+      new Train(this.ctx, this.nodes, this.connectedStops, this.colour, this)
+    );
+    console.log("new train");
   }
 }

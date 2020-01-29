@@ -29,13 +29,13 @@ class Train {
      this.length = length;
 
     if (this.length < this.track.nodes.length) {
-      console.log("ADDED STOP");
+      // console.log("ADDED STOP");
       this.nextNode = 0
       this.posX = nodes[0].x;
       this.posY = nodes[0].y;
     }
 
-    console.log("nodes del tren", nodes, length);
+    // console.log("nodes del tren", nodes, length);
     // this.getInterPoints({ x: 100, y: 100 }, { x: 300, y: 300 }, 10);
     // switch (this.track.colour) {
     //   case 'blue':
@@ -92,11 +92,11 @@ class Train {
     }
     if (idx === length - 1 || idx < 0) {
       this.nextNode = 0;
-      this.posX = node[0].x;
-      this.posY = node[0].y;
+      this.posX = nodes[0].x;
+      this.posY = nodes[0].y;
       //   this.direction *= -1;
     }
-    console.log(this.nextNode);
+    // console.log(this.nextNode);
   }
 }
 
