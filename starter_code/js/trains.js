@@ -13,6 +13,7 @@ class Train {
     this.track = track;
     this.offset = 0;
     this.direction = 1;
+    this.passengers = []
   }
   draw() {
     this.ctx.fillStyle = this.colour;
@@ -22,20 +23,20 @@ class Train {
 
   // : this.track.nodes; /* .reverse() */ // this.nodes;
   move() {
-    let nodes = this.track.nodes
-    
-    // .concat(
-    //   [...this.track.nodes].reverse().slice(1, this.track.nodes.length)
-    // );
-    let length = nodes.length;
-
     // if (length < this.track.nodes.length) {
     //   this.node = 0;
     //   this.posX = nodes[0].x;
     //   this.posY = nodes[0].y;
     // }
+    let originalNodes = this.track.nodes;
+    let nodes = [...this.track.nodes]
+    .concat(
+      [...this.track.nodes].reverse().slice(1, this.track.nodes.length)
+    );
+    let length = nodes.length;
     let idx = this.node;
-    if (idx < length - 1 ) {
+
+    if (idx < length - 1) {
       let x1 = nodes[idx].x;
       let y1 = nodes[idx].y;
       let x2 = nodes[idx + 1].x;
