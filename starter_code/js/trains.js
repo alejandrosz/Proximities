@@ -13,20 +13,20 @@ class Train {
     this.track = track;
     this.offset = 0;
     this.direction = 1;
+    this.passengers = [];
   }
   draw() {
     this.ctx.fillStyle = this.colour;
     this.ctx.fillRect(this.posX, this.posY, this.width, this.height);
+
     // this.ctx.stroke();
   }
 
   // : this.track.nodes; /* .reverse() */ // this.nodes;
   move() {
-    let nodes = this.track.nodes
-    
-    // .concat(
-    //   [...this.track.nodes].reverse().slice(1, this.track.nodes.length)
-    // );
+    let nodes = this.track.nodes.concat(
+      [...this.track.nodes].reverse().slice(1, this.track.nodes.length)
+    );
     let length = nodes.length;
 
     // if (length < this.track.nodes.length) {
@@ -35,7 +35,7 @@ class Train {
     //   this.posY = nodes[0].y;
     // }
     let idx = this.node;
-    if (idx < length - 1 ) {
+    if (idx < length - 1) {
       let x1 = nodes[idx].x;
       let y1 = nodes[idx].y;
       let x2 = nodes[idx + 1].x;
@@ -82,9 +82,27 @@ class Train {
       // this.direction *= -1;
     }
     // console.log(this.node);
+    this.checkStation();
+  }
+
+  checkStation() {
+    this.track.connectedStops.find(station => {
+      // console.log("train", train, train[0].posX , train[0].posY);
+      // console.log("posX", this.posX, "posY", this.posY);
+      let goodX =
+        this.posX <= station.posX + 40 && station.posX < this.posX + 40;
+      let goodY =
+        this.posY <= station.posY + 40 && station.posY < this.posY + 40;
+      if (goodX && goodY) {
+        this.passengers = this.passengers.filter(
+          passenger => station.type !== passenger.type
+        );
+      }
+      console.log(this.passengers);
+      // console.log(this.track.connectedStops);
+    });
   }
 }
-
 // getInterPoints(pos, nextPos, steps) {
 //   let xStep = (pos.x - nextPos.x) / steps;
 //   let yStep = (pos.y - nextPos.y) / steps;

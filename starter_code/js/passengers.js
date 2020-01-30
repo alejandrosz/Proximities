@@ -10,11 +10,21 @@ class Passenger {
     this.station.addPassenger(this);
     this.number = this.station.passengers.length;
     this.chooseImage();
-    this.posX = this.station.posX + (this.station.passengers.length - 1) * 11;
-    this.posY = this.station.posY - 10;
+    this.posX = undefined;
+    this.posY = undefined;
+    this.getPosition();
+    this.train = undefined;
     // console.log(this);
   }
-
+  getPosition() {
+    if (this.train != undefined) {
+      this.posX = this.train.posX + 11;
+      this.posY = this.train.posY - 10;
+    } else {
+      this.posX = this.station.posX + (this.station.passengers.length - 1) * 11;
+      this.posY = this.station.posY - 10;
+    }
+  }
   chooseImage() {
     switch (this.type) {
       case 1:
@@ -45,19 +55,24 @@ class Passenger {
 
   travel() {
     let choosenStation = this.checkDestination();
-    let choosedTrain = this.checkTrain();///////////////
+    let choosedTrain = this.checkTrain();
     if (choosenStation && choosedTrain) {
-      ////////////////
       this.isGone = true;
       console.log("Gone", this);
       this.station.removePassenger(this);
+      this.getTrain();
+      this.train.passengers.push(this);
+      console.log(this.train.passengers);
     }
   }
 
   checkTrain() {
-    ///////////////
     let availableTrain = this.station.isTrain;
     return availableTrain;
+  }
+  getTrain() {
+    let myTrain = this.station.tracks[0].trains[0];
+    this.train = myTrain;
   }
 
   checkDestination() {

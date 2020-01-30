@@ -50,7 +50,7 @@ class Station {
         this.posX = posX;
         this.posY = posY;
       } else {
-        if (i < 4) {
+        if (i < 5) {
           this.chooseLocation(width, height, i + 1);
         }
       }
@@ -73,7 +73,7 @@ class Station {
           return (this.isTrain = false);
         }
       });
-    console.log(this.isTrain);
+    // console.log(this.isTrain);
   }
 
   chooseImage() {
