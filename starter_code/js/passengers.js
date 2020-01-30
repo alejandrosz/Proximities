@@ -12,14 +12,13 @@ class Passenger {
     this.chooseImage();
     this.posX = undefined;
     this.posY = undefined;
-    this.getPosition();
     this.train = undefined;
-    // console.log(this);
   }
   getPosition() {
-    if (this.train != undefined) {
-      this.posX = this.train.posX + 11;
-      this.posY = this.train.posY - 10;
+    console.log("train x", this.train);
+    if (this.train ) {
+      this.posX = this.train.posX + 60;
+      this.posY = this.train.posY - 60;
     } else {
       this.posX = this.station.posX + (this.station.passengers.length - 1) * 11;
       this.posY = this.station.posY - 10;
@@ -40,6 +39,7 @@ class Passenger {
   }
 
   draw() {
+    this.getPosition()
     this.ctx.drawImage(
       this.image,
       this.posX, // mas un margen
@@ -58,11 +58,11 @@ class Passenger {
     let choosedTrain = this.checkTrain();
     if (choosenStation && choosedTrain) {
       this.isGone = true;
-      console.log("Gone", this);
       this.station.removePassenger(this);
       this.getTrain();
+      console.log(this.train)
+      //this.getPosition()
       this.train.passengers.push(this);
-      console.log(this.train.passengers);
     }
   }
 
@@ -73,6 +73,7 @@ class Passenger {
   getTrain() {
     let myTrain = this.station.tracks[0].trains[0];
     this.train = myTrain;
+    
   }
 
   checkDestination() {

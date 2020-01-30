@@ -36,7 +36,6 @@ class Track {
       this.ctx.closePath();
       this.drawTrains();
       this.drawText();
-      // console.log("this.trains", this.trains);
     }
   }
   drawText() {

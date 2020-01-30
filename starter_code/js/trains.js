@@ -81,14 +81,11 @@ class Train {
       this.posY = nodes[0].y;
       // this.direction *= -1;
     }
-    // console.log(this.node);
     this.checkStation();
   }
 
   checkStation() {
     this.track.connectedStops.find(station => {
-      // console.log("train", train, train[0].posX , train[0].posY);
-      // console.log("posX", this.posX, "posY", this.posY);
       let goodX =
         this.posX <= station.posX + 40 && station.posX < this.posX + 40;
       let goodY =
@@ -98,7 +95,7 @@ class Train {
           passenger => station.type !== passenger.type
         );
       }
-      console.log(this.passengers);
+
       // console.log(this.track.connectedStops);
     });
   }
