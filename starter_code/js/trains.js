@@ -9,7 +9,7 @@ class Train {
     this.posY = connectedStops[0].posY;
     this.colour = colour;
     this.velocity = undefined;
-    this.nextNode = 0;
+    this.node = 0;
     this.track = track;
     this.offset = 0;
     this.direction = 1;
@@ -22,18 +22,20 @@ class Train {
 
   // : this.track.nodes; /* .reverse() */ // this.nodes;
   move() {
-    let nodes = this.track.nodes.concat(
-      [...this.track.nodes].reverse().slice(1, this.track.nodes.length)
-    );
+    let nodes = this.track.nodes
+    
+    // .concat(
+    //   [...this.track.nodes].reverse().slice(1, this.track.nodes.length)
+    // );
     let length = nodes.length;
-    this.length = length;
-    if (this.length < this.track.nodes.length) {
-      this.nextNode = 0;
-      this.posX = nodes[0].x;
-      this.posY = nodes[0].y;
-    }
-    let idx = this.nextNode;
-    if (idx < length - 1 && idx >= 0) {
+
+    // if (length < this.track.nodes.length) {
+    //   this.node = 0;
+    //   this.posX = nodes[0].x;
+    //   this.posY = nodes[0].y;
+    // }
+    let idx = this.node;
+    if (idx < length - 1 ) {
       let x1 = nodes[idx].x;
       let y1 = nodes[idx].y;
       let x2 = nodes[idx + 1].x;
@@ -41,7 +43,7 @@ class Train {
 
       let points = { xa: x1, ya: y1, xb: x2, yb: y2 };
       if (points.xa === points.xb && points.ya === points.yb) {
-        //this.nextNode += 1;
+        //this.node+= 1;
       } else if (points.xa === points.xb && points.ya > points.yb) {
         this.posX = this.posX;
         this.posY -= 1;
@@ -68,18 +70,18 @@ class Train {
         this.posY -= 1;
       }
       if (this.posX === points.xb && this.posY === points.yb) {
-        this.nextNode += 1;
+        this.node += 1;
         /* this.posX = node[0].x;
         this.posY = node[0].y; */
       }
     }
     if (idx === length - 1 || idx < 0) {
-      this.nextNode = 0;
+      this.node = 0;
       this.posX = nodes[0].x;
       this.posY = nodes[0].y;
       // this.direction *= -1;
     }
-    // console.log(this.nextNode);
+    // console.log(this.node);
   }
 }
 

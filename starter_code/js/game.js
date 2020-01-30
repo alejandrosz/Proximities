@@ -37,7 +37,7 @@ const Game = {
       this.removePassengersOnTime();
       // this.tracks.forEach(track => track.availableTracks());
       this.stations.forEach(station => station.checkTrain())
-      if (this.framesCounter%300 === 0) {
+      if (this.framesCounter%30 === 0) {
         this.tracks.forEach(track => track.maximumLength += 100)
       }
       this.drawAll();

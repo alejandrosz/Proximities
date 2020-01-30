@@ -64,18 +64,18 @@ class Station {
         // console.log("train", train, train[0].posX , train[0].posY);
         // console.log("posX", this.posX, "posY", this.posY);
         let goodX =
-          this.posX <= train[0].posX && train[0].posX < this.posX + 100;
+          this.posX <= train[0].posX +30 && train[0].posX < this.posX + 40;
         let goodY =
-          this.posY <= train[0].posY && train[0].posY < this.posY + 100;
+          this.posY <= train[0].posY +30 && train[0].posY < this.posY + 40;
         if (goodX && goodY) {
           return (this.isTrain = true);
         } else {
-          return false;
+          return (this.isTrain = false);
         }
       });
     console.log(this.isTrain);
   }
-  
+
   chooseImage() {
     switch (this.type) {
       case 1:
