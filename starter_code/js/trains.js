@@ -18,8 +18,15 @@ class Train {
   draw() {
     this.ctx.fillStyle = this.colour;
     this.ctx.fillRect(this.posX, this.posY, this.width, this.height);
-
-    // this.ctx.stroke();
+    console.log(this.passengers);
+    this.drawPassenger();
+  }
+  drawPassenger() {
+    this.passengers.forEach((passenger, i) => {
+      passenger.posX = this.posX + 10 * i ;
+      passenger.posY = this.passengers.length === 1? this.posY+12: this.posY;
+      passenger.draw();
+    });
   }
 
   // : this.track.nodes; /* .reverse() */ // this.nodes;
