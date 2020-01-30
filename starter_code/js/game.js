@@ -36,6 +36,9 @@ const Game = {
       this.createPassengersOnTime();
       this.removePassengersOnTime();
       // this.tracks.forEach(track => track.availableTracks());
+      if (this.framesCounter%300 === 0) {
+        this.tracks.forEach(track => track.maximumLength += 100)
+      }
       this.drawAll();
       this.moveAll();
     }, 1000 / this.fps);

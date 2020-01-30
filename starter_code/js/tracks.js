@@ -11,11 +11,13 @@ class Track {
     this.time = time;
     this.width = width;
     this.height = height;
-    this.availableTracks = undefined
+    this.availableTracks = undefined;
+    this.maximumLength = 300;
     // this.createFirstTrain()
   }
 
   draw() {
+    this.availableTracks = this.maximumLength - Math.floor(this.totalLength());
     if (this.nodes.length > 1) {
       this.ctx.beginPath(); // Start a new path.
       this.ctx.lineWidth = "10";
@@ -73,7 +75,7 @@ class Track {
             this.connectedStops[i + 1].posX,
             this.connectedStops[i + 1].posY
           );
-          this.nodes.push({ x: node.x , y: node.y }); // anadir aqui los offset
+          this.nodes.push({ x: node.x, y: node.y }); // anadir aqui los offset
         }
       });
     }
@@ -92,7 +94,7 @@ class Track {
           let partialLength = Math.sqrt(
             Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2)
           );
-          return partialLength;
+          return Math.ceil(partialLength / 5) * 5;
         } else {
           return 0;
         }
@@ -104,16 +106,8 @@ class Track {
     return long;
   }
 
-  maximumLength() {
-    let maximumLength = 0;
-    if (this.time % 500 === 0) {
-      maximumLength = maximumLength + 100;
-    }
-    return maximumLength;
-  }
-
   // availableTracks() {
-  //   let availableTracks = this.maximumLength() - this.availableTracks();
+  //   let availableTracks = this.maximumLength - this.availableTracks();
   //   return availableTracks;
   // }
 
@@ -147,33 +141,35 @@ class Track {
   // }
 
   addStop(previousStation, station) {
-    if (this.connectedStops.length === 0) {
-      this.connectedStops.push(previousStation, station);
-      station.addTrack(this);
-      previousStation.addTrack(this);
-      // this.createTrain();
-    } else if (
-      this.connectedStops.length !== 0 &&
-      !this.connectedStops.includes(previousStation)
-    ) {
-      return false;
-    } else if (this.connectedStops[0].number === previousStation.number) {
-      this.connectedStops.unshift(station);
-      //this.trains.forEach( si va en la direccion 1 train.nextIndex += 1, si no, no haces nada)
-      station.addTrack(this);
-    } else if (
-      this.connectedStops[this.connectedStops.length - 1].number ===
-      previousStation.number
-    ) {
-      this.connectedStops.push(station);
-      //this.trains.forEach, si va en la direccion -1, le restas un indice, y si no no haces nada
-      station.addTrack(this);
-    }
-    this.getPath();
-    this.availableTracks = this.maximumLength() //- Math.floor(this.totalLength());
-    console.log(this.availableTracks );
-    if (this.trains.length === 0) {
-      this.createTrain();
+    if (this.availableTracks > 0) {
+      if (this.connectedStops.length === 0) {
+        this.connectedStops.push(previousStation, station);
+        station.addTrack(this);
+        previousStation.addTrack(this);
+        // this.createTrain();
+      } else if (
+        this.connectedStops.length !== 0 &&
+        !this.connectedStops.includes(previousStation)
+      ) {
+        return false;
+      } else if (this.connectedStops[0].number === previousStation.number) {
+        this.connectedStops.unshift(station);
+        //this.trains.forEach( si va en la direccion 1 train.nextIndex += 1, si no, no haces nada)
+        station.addTrack(this);
+      } else if (
+        this.connectedStops[this.connectedStops.length - 1].number ===
+        previousStation.number
+      ) {
+        this.connectedStops.push(station);
+        //this.trains.forEach, si va en la direccion -1, le restas un indice, y si no no haces nada
+        station.addTrack(this);
+      }
+      this.getPath();
+
+      console.log(this.availableTracks);
+      if (this.trains.length === 0) {
+        this.createTrain();
+      }
     }
   }
   createTrain() {

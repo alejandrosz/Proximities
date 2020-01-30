@@ -5,15 +5,27 @@ class Station {
     this.ctx = ctx;
     this.width = 40;
     this.height = 40;
-    this.posX = width/2;
-    this.posY = height/2;
+    this.posX = width / 2;
+    this.posY = height / 2;
     this.type = Math.floor(Math.random() * (4 - 1)) + 1; // entre 1 y 3
     this.passengers = [];
     this.image = new Image();
     this.chooseImage();
     this.chooseLocation(width, height);
     this.tracks = [];
-    // console.log(this);
+    // this.isTrain = false
+  }
+
+  checkTrain() {
+    // this.trains.find(train => {
+    //   let goodX = train.posX <= this.posX && this.posX < train.posX + 100;
+    //   let goodY = train.posY <= this.posY && this.posY < train.posY + 100;
+    //   if (goodX && goodY) {
+    //     return this.isTrain = true;
+    //   } else {
+    //     return false;
+    //   }
+    // });
   }
   chooseLocation(width, height, i = 0) {
     let posX = Math.floor(

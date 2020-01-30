@@ -45,11 +45,17 @@ class Passenger {
 
   travel() {
     let choosenStation = this.checkDestination();
-    if (choosenStation) {
+    // let choosedTrain = this.checkTrain();
+    if (choosenStation) { // && availableTrain
       this.isGone = true;
       console.log("Gone", this);
       this.station.removePassenger(this);
     }
+  }
+
+  checkTrain(){
+    let availableTrain = this.station.isTrain
+    return availableTrain
   }
 
   checkDestination() {

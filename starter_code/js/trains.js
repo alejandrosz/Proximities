@@ -27,29 +27,12 @@ class Train {
     // : this.track.nodes; /* .reverse() */ // this.nodes;
     let length = nodes.length;
      this.length = length;
-
     if (this.length < this.track.nodes.length) {
-      // console.log("ADDED STOP");
       this.nextNode = 0
       this.posX = nodes[0].x;
       this.posY = nodes[0].y;
     }
-
-    // console.log("nodes del tren", nodes, length);
-    // this.getInterPoints({ x: 100, y: 100 }, { x: 300, y: 300 }, 10);
-    // switch (this.track.colour) {
-    //   case 'blue':
-    //     this.offset = 9;
-    //     break;
-    //   case 'yellow':
-    //     this.offset = -9;
-    //     break;
-    //   default:
-    //     this.offset = 0;
-    // }
-    //nodes.forEach((node, idx) => {
     let idx = this.nextNode;
-    // console.log("primero", idx);
     if (idx < length - 1 && idx >= 0) {
       let x1 = nodes[idx].x;
       let y1 = nodes[idx].y;
@@ -94,7 +77,7 @@ class Train {
       this.nextNode = 0;
       this.posX = nodes[0].x;
       this.posY = nodes[0].y;
-      //   this.direction *= -1;
+        // this.direction *= -1;
     }
     // console.log(this.nextNode);
   }
