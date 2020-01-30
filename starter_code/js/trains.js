@@ -20,15 +20,15 @@ class Train {
     // this.ctx.stroke();
   }
 
+  // : this.track.nodes; /* .reverse() */ // this.nodes;
   move() {
     let nodes = this.track.nodes.concat(
       [...this.track.nodes].reverse().slice(1, this.track.nodes.length)
     );
-    // : this.track.nodes; /* .reverse() */ // this.nodes;
     let length = nodes.length;
-     this.length = length;
+    this.length = length;
     if (this.length < this.track.nodes.length) {
-      this.nextNode = 0
+      this.nextNode = 0;
       this.posX = nodes[0].x;
       this.posY = nodes[0].y;
     }
@@ -77,7 +77,7 @@ class Train {
       this.nextNode = 0;
       this.posX = nodes[0].x;
       this.posY = nodes[0].y;
-        // this.direction *= -1;
+      // this.direction *= -1;
     }
     // console.log(this.nextNode);
   }

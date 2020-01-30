@@ -13,20 +13,25 @@ class Station {
     this.chooseImage();
     this.chooseLocation(width, height);
     this.tracks = [];
-    // this.isTrain = false
+    this.isTrain = false;
   }
+  // checkTrain() {
+  //   this.tracks.find(track => {
+  //     let goodX =
+  //       track.trains[0].posX <= this.posX &&
+  //       this.posX < track.trains[0].posX + 100;
+  //     let goodY =
+  //       track.trains[0].posY <= this.posY &&
+  //       this.posY < track.trains[0].posY + 100;
+  //     if (goodX && goodY) {
+  //       return (this.isTrain = true);
+  //     } else {
+  //       return false;
+  //     }
+  //   });
+  //   console.log(this.isTrain)
+  // }
 
-  checkTrain() {
-    // this.trains.find(train => {
-    //   let goodX = train.posX <= this.posX && this.posX < train.posX + 100;
-    //   let goodY = train.posY <= this.posY && this.posY < train.posY + 100;
-    //   if (goodX && goodY) {
-    //     return this.isTrain = true;
-    //   } else {
-    //     return false;
-    //   }
-    // });
-  }
   chooseLocation(width, height, i = 0) {
     let posX = Math.floor(
       width / 2 + (Math.floor(Math.random() * (6 - -6)) + -6) * 60
@@ -51,6 +56,26 @@ class Station {
       }
     });
   }
+
+  checkTrain() {
+    this.tracks
+      .map(track => track.trains)
+      .find(train => {
+        // console.log("train", train, train[0].posX , train[0].posY);
+        // console.log("posX", this.posX, "posY", this.posY);
+        let goodX =
+          this.posX <= train[0].posX && train[0].posX < this.posX + 100;
+        let goodY =
+          this.posY <= train[0].posY && train[0].posY < this.posY + 100;
+        if (goodX && goodY) {
+          return (this.isTrain = true);
+        } else {
+          return false;
+        }
+      });
+    console.log(this.isTrain);
+  }
+  
   chooseImage() {
     switch (this.type) {
       case 1:

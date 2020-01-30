@@ -17,7 +17,10 @@ class Track {
   }
 
   draw() {
-    this.availableTracks = this.maximumLength - Math.floor(this.totalLength());
+    this.availableTracks = Math.max(
+      0,
+      this.maximumLength - Math.floor(this.totalLength())
+    );
     if (this.nodes.length > 1) {
       this.ctx.beginPath(); // Start a new path.
       this.ctx.lineWidth = "10";
@@ -50,7 +53,7 @@ class Track {
     this.ctx.font = "16px Helvetica";
     this.ctx.fillText(
       this.availableTracks,
-      this.width - 90,
+      this.width - 80,
       this.height - 295 + this.offset,
       35
     );

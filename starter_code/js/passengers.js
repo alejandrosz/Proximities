@@ -45,17 +45,19 @@ class Passenger {
 
   travel() {
     let choosenStation = this.checkDestination();
-    // let choosedTrain = this.checkTrain();
-    if (choosenStation) { // && availableTrain
+    let choosedTrain = this.checkTrain();///////////////
+    if (choosenStation && choosedTrain) {
+      ////////////////
       this.isGone = true;
       console.log("Gone", this);
       this.station.removePassenger(this);
     }
   }
 
-  checkTrain(){
-    let availableTrain = this.station.isTrain
-    return availableTrain
+  checkTrain() {
+    ///////////////
+    let availableTrain = this.station.isTrain;
+    return availableTrain;
   }
 
   checkDestination() {
@@ -65,7 +67,7 @@ class Passenger {
     );
     if (possibleStations) {
       return possibleStations[
-        Math.floor(Math.random() * possibleStations.length) // aqui habia un +1 sospechoso
+        Math.floor(Math.random() * possibleStations.length)
       ];
     } else {
       return false;
