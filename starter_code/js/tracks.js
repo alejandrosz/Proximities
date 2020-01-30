@@ -1,5 +1,5 @@
 class Track {
-  constructor(ctx, colour) {
+  constructor(ctx, colour, time, width, height) {
     this.ctx = ctx;
     this.originStation = undefined;
     this.endStation = undefined;
@@ -8,6 +8,10 @@ class Track {
     this.nodes = [];
     this.offset = 0;
     this.trains = [];
+    this.time = time;
+    this.width = width;
+    this.height = height;
+    this.availableTracks = undefined
     // this.createFirstTrain()
   }
 
@@ -26,32 +30,41 @@ class Track {
       this.ctx.stroke();
       this.ctx.closePath();
       this.drawTrains();
+      this.drawText();
       // console.log("this.trains", this.trains);
     }
   }
-
+  drawText() {
+    switch (this.colour) {
+      case "blue":
+        this.offset = +30;
+        break;
+      case "yellow":
+        this.offset = +60;
+        break;
+      default:
+        this.offset = 0;
+    }
+    this.ctx.font = "16px Helvetica";
+    this.ctx.fillText(
+      this.availableTracks,
+      this.width - 90,
+      this.height - 295 + this.offset,
+      35
+    );
+  }
   drawTrains() {
     this.trains.forEach(train => train.draw());
   }
 
   getPath() {
-    // switch (this.colour) {
-    //   case 'blue':
-    //     this.offset = 9;
-    //     break;
-    //   case 'yellow':
-    //     this.offset = -9;
-    //     break;
-    //   default:
-    //     this.offset = 0;
-    // }
     this.nodes = [];
     if (this.connectedStops.length !== 0) {
       // this.createTrain();
       this.connectedStops.forEach((station, i) => {
         this.nodes.push({
-          x: station.posX + this.offset,
-          y: station.posY - this.offset
+          x: station.posX, //+ this.offset,
+          y: station.posY //- this.offset
         });
         if (i < this.connectedStops.length - 1) {
           let node = this.calcNode(
@@ -60,7 +73,7 @@ class Track {
             this.connectedStops[i + 1].posX,
             this.connectedStops[i + 1].posY
           );
-          this.nodes.push({ x: node.x + this.offset, y: node.y - this.offset });
+          this.nodes.push({ x: node.x , y: node.y }); // anadir aqui los offset
         }
       });
     }
@@ -84,9 +97,25 @@ class Track {
           return 0;
         }
       })
-      .reduce((acc, current) => acc + current);
+      // .reduce((acc, current) => acc + current);
+      // .reduce(function(a,b){return a + b})
+      // .reduce( ( sum, { x } ) => sum + x , 0)
+      .reduce((a, b) => a + b, 0);
     return long;
   }
+
+  maximumLength() {
+    let maximumLength = 0;
+    if (this.time % 500 === 0) {
+      maximumLength = maximumLength + 100;
+    }
+    return maximumLength;
+  }
+
+  // availableTracks() {
+  //   let availableTracks = this.maximumLength() - this.availableTracks();
+  //   return availableTracks;
+  // }
 
   // addNode(station, nextStation) {
   //   if (nextStation) {
@@ -141,8 +170,8 @@ class Track {
       station.addTrack(this);
     }
     this.getPath();
-    let longitud = this.totalLength();
-    console.log(longitud);
+    this.availableTracks = this.maximumLength() //- Math.floor(this.totalLength());
+    console.log(this.availableTracks );
     if (this.trains.length === 0) {
       this.createTrain();
     }

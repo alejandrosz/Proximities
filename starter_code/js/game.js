@@ -35,6 +35,7 @@ const Game = {
       this.createStationsOnTime();
       this.createPassengersOnTime();
       this.removePassengersOnTime();
+      // this.tracks.forEach(track => track.availableTracks());
       this.drawAll();
       this.moveAll();
     }, 1000 / this.fps);
@@ -56,9 +57,9 @@ const Game = {
     this.stations.push(station3);
   },
   createStarterTracks() {
-    let redLine = new Track(this.ctx, "red");
-    let blueLine = new Track(this.ctx, "blue");
-    let yellowLine = new Track(this.ctx, "yellow");
+    let redLine = new Track(this.ctx, "red", this.framesCounter, this.width, this.height);
+    let blueLine = new Track(this.ctx, "blue", this.framesCounter, this.width, this.height);
+    let yellowLine = new Track(this.ctx, "yellow", this.framesCounter, this.width, this.height);
     this.tracks.push(blueLine, yellowLine, redLine);
     this.selectedTrack = redLine;
   },
