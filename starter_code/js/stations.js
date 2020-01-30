@@ -1,5 +1,5 @@
 class Station {
-  constructor(ctx, width, height, game, time) {
+  constructor(ctx, width, height, game) {
     this.game = game;
     this.number = game.stations.length;
     this.ctx = ctx;
@@ -14,23 +14,8 @@ class Station {
     this.chooseLocation(width, height);
     this.tracks = [];
     this.isTrain = false;
+    this.imageGO = document.querySelector(".game-over-div");
   }
-  // checkTrain() {
-  //   this.tracks.find(track => {
-  //     let goodX =
-  //       track.trains[0].posX <= this.posX &&
-  //       this.posX < track.trains[0].posX + 100;
-  //     let goodY =
-  //       track.trains[0].posY <= this.posY &&
-  //       this.posY < track.trains[0].posY + 100;
-  //     if (goodX && goodY) {
-  //       return (this.isTrain = true);
-  //     } else {
-  //       return false;
-  //     }
-  //   });
-  //   console.log(this.isTrain)
-  // }
 
   chooseLocation(width, height, i = 0) {
     let posX = Math.floor(
@@ -61,19 +46,16 @@ class Station {
     this.tracks
       .map(track => track.trains)
       .find(train => {
-        // console.log("train", train, train[0].posX , train[0].posY);
-        // console.log("posX", this.posX, "posY", this.posY);
         let goodX =
-          this.posX <= train[0].posX +30 && train[0].posX < this.posX + 40;
+          this.posX <= train[0].posX + 30 && train[0].posX < this.posX + 40;
         let goodY =
-          this.posY <= train[0].posY +30 && train[0].posY < this.posY + 40;
+          this.posY <= train[0].posY + 30 && train[0].posY < this.posY + 40;
         if (goodX && goodY) {
           return (this.isTrain = true);
         } else {
           return (this.isTrain = false);
         }
       });
-    // console.log(this.isTrain);
   }
 
   chooseImage() {
@@ -89,6 +71,21 @@ class Station {
         break;
     }
   }
+
+  chooseImageConnected() {
+    switch (this.type) {
+      case 1:
+        this.image.src = "./images/passengerTriangle.png";
+        break;
+      case 2:
+        this.image.src = "./images/passengerSquare.png";
+        break;
+      case 3:
+        this.image.src = "./images/passengerCircle.png";
+        break;
+    }
+  }
+
 
   draw() {
     this.ctx.drawImage(
@@ -110,12 +107,15 @@ class Station {
 
   removePassenger(passenger) {
     this.passengers = this.passengers.filter(
-      item => item.number !== passenger.number /* item.isGone !== true */
+      item => item.number !== passenger.number
     );
   }
 
   checkLimit() {
-    if (this.passengers.length >= 12) {
+    if (this.passengers.length >= 3) {
+      console.log("game over");
+      console.log(this.imageGO);
+      // this.imageGO.style.display = flex;
       return true;
     } else {
       return false;
@@ -133,7 +133,4 @@ class Station {
       .flat();
     return connectedStations;
   }
-  // connectStation(otherStation) {
-  // la linea llama a esta funcion cuando acaba la linea y pushea a this.connectedStations la nueva estacion
-  // }
 }

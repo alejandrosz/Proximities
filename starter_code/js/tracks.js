@@ -81,8 +81,6 @@ class Track {
         }
       });
     }
-
-    // console.log("nodes del track", this.nodes);
   }
 
   totalLength() {
@@ -136,15 +134,12 @@ class Track {
     const newNode = { x, y };
     return newNode;
   }
-  // createFirstTrain() {
-  //   if (this.connectedStops.length === 2 && this.trains.length === 0) {
-  //     this.createTrain;
-  //   }
-  // }
 
   addStop(previousStation, station) {
     if (this.availableTracks > 0) {
       if (this.connectedStops.length === 0) {
+        station.chooseImageConnected()
+        previousStation.chooseImageConnected()
         this.connectedStops.push(previousStation, station);
         station.addTrack(this);
         previousStation.addTrack(this);
@@ -155,6 +150,7 @@ class Track {
       ) {
         return false;
       } else if (this.connectedStops[0].number === previousStation.number) {
+        station.chooseImageConnected()
         this.connectedStops.unshift(station);
         //this.trains.forEach( si va en la direccion 1 train.nextIndex += 1, si no, no haces nada)
         station.addTrack(this);
@@ -162,13 +158,12 @@ class Track {
         this.connectedStops[this.connectedStops.length - 1].number ===
         previousStation.number
       ) {
+        station.chooseImageConnected()
         this.connectedStops.push(station);
         //this.trains.forEach, si va en la direccion -1, le restas un indice, y si no no haces nada
         station.addTrack(this);
       }
       this.getPath();
-
-      console.log(this.availableTracks);
       if (this.trains.length === 0) {
         this.createTrain();
       }
@@ -178,6 +173,5 @@ class Track {
     this.trains.push(
       new Train(this.ctx, this.nodes, this.connectedStops, this.colour, this)
     );
-    console.log("new train");
   }
 }

@@ -23,3 +23,23 @@ body button {
   top: 0px;
   left: 0px;
 }
+img {
+  position: absolute;
+  width: auto;
+  height: 100vh;
+  margin: auto;
+  align: center;
+}
+
+div {
+  display: flex;
+  align-content: center;
+  justify-content: center;
+}
+
+.game-over-div {
+  display:none;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgb(254, 225, 1);
+}

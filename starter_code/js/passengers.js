@@ -5,7 +5,7 @@ class Passenger {
     this.height = 10;
     this.station =
       stations[Math.floor(Math.random() * (stations.length - 0)) + 0]; // una estacion random
-    this.type = this.getType()//Math.floor(Math.random() * (4 - 1)) + 1; // entre 1 y 3
+    this.type = this.getType(); //Math.floor(Math.random() * (4 - 1)) + 1; // entre 1 y 3
     this.image = new Image();
     this.station.addPassenger(this);
     this.number = this.station.passengers.length;
@@ -18,13 +18,11 @@ class Passenger {
 
   getType() {
     let types = [1, 2, 3];
-    let spliced = types.splice(this.station.number);
+    let filtered = types.filter(e => e !== this.station.type);
     let random = Math.floor(Math.random() * (2 - 0)) + 0;
-    this.type = spliced[random];
-    console.log(types)
+    return filtered[random];
   }
   getPosition() {
-    console.log("train x", this.train);
     if (this.train) {
       this.posX = this.train.posX + 60;
       this.posY = this.train.posY - 60;
@@ -69,7 +67,6 @@ class Passenger {
       this.isGone = true;
       this.station.removePassenger(this);
       this.getTrain();
-      console.log(this.train);
       this.train.passengers.push(this);
     }
   }

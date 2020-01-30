@@ -10,6 +10,7 @@ const Game = {
   buttons: [],
   pickedStations: [],
   multi: 0.9,
+  
   // trains: [],
 
   init() {
@@ -20,8 +21,12 @@ const Game = {
   },
 
   setDimensions() {
-    this.width = window.innerWidth%2===0? window.innerWidth : window.innerWidth -1;
-    this.height = window.innerHeight%2===0? window.innerHeight : window.innerHeight -1;
+    this.width =
+      window.innerWidth % 2 === 0 ? window.innerWidth : window.innerWidth - 1;
+    this.height =
+      window.innerHeight % 2 === 0
+        ? window.innerHeight
+        : window.innerHeight - 1;
     this.canvas.width = this.width;
     this.canvas.height = this.height;
     this.canvas.setAttribute("width", this.width);
@@ -36,9 +41,12 @@ const Game = {
       this.createPassengersOnTime();
       this.removePassengersOnTime();
       // this.tracks.forEach(track => track.availableTracks());
-      this.stations.forEach(station => station.checkTrain())
-      if (this.framesCounter%30 === 0) {
-        this.tracks.forEach(track => track.maximumLength += 100)
+      this.stations.forEach(station => {
+        station.checkTrain();
+        station.checkLimit();
+      });
+      if (this.framesCounter % 100 === 0) {
+        this.tracks.forEach(track => (track.maximumLength += 100));
       }
       this.drawAll();
       this.moveAll();
@@ -61,9 +69,27 @@ const Game = {
     this.stations.push(station3);
   },
   createStarterTracks() {
-    let redLine = new Track(this.ctx, "red", this.framesCounter, this.width, this.height);
-    let blueLine = new Track(this.ctx, "blue", this.framesCounter, this.width, this.height);
-    let yellowLine = new Track(this.ctx, "yellow", this.framesCounter, this.width, this.height);
+    let redLine = new Track(
+      this.ctx,
+      "red",
+      this.framesCounter,
+      this.width,
+      this.height
+    );
+    let blueLine = new Track(
+      this.ctx,
+      "blue",
+      this.framesCounter,
+      this.width,
+      this.height
+    );
+    let yellowLine = new Track(
+      this.ctx,
+      "yellow",
+      this.framesCounter,
+      this.width,
+      this.height
+    );
     this.tracks.push(blueLine, yellowLine, redLine);
     this.selectedTrack = redLine;
   },
@@ -83,8 +109,8 @@ const Game = {
     });
     this.buttons.forEach(button => button.draw());
   },
-  moveAll(){
-    this.tracks.forEach(track => track.trains.forEach(train => train.move()))
+  moveAll() {
+    this.tracks.forEach(track => track.trains.forEach(train => train.move()));
   },
   gameOver() {
     clearInterval(this.interval);
