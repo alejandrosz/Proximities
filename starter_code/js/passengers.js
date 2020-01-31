@@ -4,8 +4,8 @@ class Passenger {
     this.width = 10;
     this.height = 10;
     this.station =
-      stations[Math.floor(Math.random() * (stations.length - 0)) + 0]; // una estacion random
-    this.type = this.getType(); //Math.floor(Math.random() * (4 - 1)) + 1; // entre 1 y 3
+      stations[Math.floor(Math.random() * (stations.length - 0)) + 0]; 
+    this.type = this.getType(); //Math.floor(Math.random() * (4 - 1)) + 1; 
     this.image = new Image();
     this.station.addPassenger(this);
     this.number = this.station.passengers.length;
@@ -46,7 +46,6 @@ class Passenger {
   }
 
   draw() {
-    // this.getPosition()
     this.ctx.drawImage(
       this.image,
       this.posX, // mas un margen

@@ -1,4 +1,5 @@
 window.onload = function() {
+  
   document.getElementById("start-image").onclick = function() {
     startGame();
   };

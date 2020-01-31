@@ -1,5 +1,5 @@
 class Station {
-  constructor(ctx, width, height, game) {
+  constructor(ctx, width, height, game, type) {
     this.game = game;
     this.number = game.stations.length;
     this.ctx = ctx;
@@ -7,14 +7,13 @@ class Station {
     this.height = 40;
     this.posX = width / 2;
     this.posY = height / 2;
-    this.type = Math.floor(Math.random() * (4 - 1)) + 1; // entre 1 y 3
+    this.type = type || Math.floor(Math.random() * (4 - 1)) + 1; // entre 1 y 3
     this.passengers = [];
     this.image = new Image();
     this.chooseImage();
     this.chooseLocation(width, height);
     this.tracks = [];
     this.isTrain = false;
-    this.imageGO = document.querySelector(".game-over-div");
   }
 
   chooseLocation(width, height, i = 0) {
@@ -86,7 +85,6 @@ class Station {
     }
   }
 
-
   draw() {
     this.ctx.drawImage(
       this.image,
@@ -112,10 +110,7 @@ class Station {
   }
 
   checkLimit() {
-    if (this.passengers.length >= 3) {
-      console.log("game over");
-      console.log(this.imageGO);
-      // this.imageGO.style.display = flex;
+    if (this.passengers.length >= 6) {
       return true;
     } else {
       return false;

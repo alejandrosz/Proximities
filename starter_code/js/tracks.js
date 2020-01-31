@@ -3,7 +3,7 @@ class Track {
     this.ctx = ctx;
     this.originStation = undefined;
     this.endStation = undefined;
-    this.colour = colour; //|| "#FF0000"; en caso de no tener color asignado, es rojo
+    this.colour = colour;
     this.connectedStops = [];
     this.nodes = [];
     this.offset = 0;
@@ -13,7 +13,6 @@ class Track {
     this.height = height;
     this.availableTracks = undefined;
     this.maximumLength = 300;
-    // this.createFirstTrain()
   }
 
   draw() {
@@ -22,10 +21,10 @@ class Track {
       this.maximumLength - Math.floor(this.totalLength())
     );
     if (this.nodes.length > 1) {
-      this.ctx.beginPath(); // Start a new path.
+      this.ctx.beginPath();
       this.ctx.lineWidth = "10";
       this.ctx.lineJoin = "round";
-      this.ctx.strokeStyle = this.colour; // This path is green.
+      this.ctx.strokeStyle = this.colour;
       this.ctx.moveTo(this.nodes[0].x + 20, this.nodes[0].y + 20);
       this.nodes.forEach((node, i) => {
         if (i > 0) {
@@ -41,10 +40,10 @@ class Track {
   drawText() {
     switch (this.colour) {
       case "blue":
-        this.offset = +30;
+        this.offset = +40;
         break;
       case "yellow":
-        this.offset = +60;
+        this.offset = +80;
         break;
       default:
         this.offset = 0;
@@ -52,8 +51,8 @@ class Track {
     this.ctx.font = "16px Helvetica";
     this.ctx.fillText(
       this.availableTracks,
-      this.width - 80,
-      this.height - 295 + this.offset,
+      this.width - 85,
+      this.height / 2 + 40 + this.offset,
       35
     );
   }
@@ -99,31 +98,10 @@ class Track {
           return 0;
         }
       })
-      // .reduce((acc, current) => acc + current);
-      // .reduce(function(a,b){return a + b})
-      // .reduce( ( sum, { x } ) => sum + x , 0)
+
       .reduce((a, b) => a + b, 0);
     return long;
   }
-
-  // availableTracks() {
-  //   let availableTracks = this.maximumLength - this.availableTracks();
-  //   return availableTracks;
-  // }
-
-  // addNode(station, nextStation) {
-  //   if (nextStation) {
-  //     let newNode = this.calcNode(
-  //       station.posX + 20,
-  //       station.posY + 20,
-  //       nextStation.posX + 20,
-  //       nextStation.posY + 20
-  //     );
-  //     if (newNode.x && newNode.y) {
-  //       return this.ctx.lineTo(newNode.x, newNode.y);
-  //     }
-  //   }
-  // }
 
   calcNode(x1, y1, x2, y2) {
     const xDif = Math.abs(x1 - x2);
@@ -138,29 +116,26 @@ class Track {
   addStop(previousStation, station) {
     if (this.availableTracks > 0) {
       if (this.connectedStops.length === 0) {
-        station.chooseImageConnected()
-        previousStation.chooseImageConnected()
+        station.chooseImageConnected();
+        previousStation.chooseImageConnected();
         this.connectedStops.push(previousStation, station);
         station.addTrack(this);
         previousStation.addTrack(this);
-        // this.createTrain();
       } else if (
         this.connectedStops.length !== 0 &&
         !this.connectedStops.includes(previousStation)
       ) {
         return false;
       } else if (this.connectedStops[0].number === previousStation.number) {
-        station.chooseImageConnected()
+        station.chooseImageConnected();
         this.connectedStops.unshift(station);
-        //this.trains.forEach( si va en la direccion 1 train.nextIndex += 1, si no, no haces nada)
         station.addTrack(this);
       } else if (
         this.connectedStops[this.connectedStops.length - 1].number ===
         previousStation.number
       ) {
-        station.chooseImageConnected()
+        station.chooseImageConnected();
         this.connectedStops.push(station);
-        //this.trains.forEach, si va en la direccion -1, le restas un indice, y si no no haces nada
         station.addTrack(this);
       }
       this.getPath();

@@ -24,7 +24,7 @@ body button {
   left: 0px;
 }
 img {
-  position: absolute;
+  position: fixed;
   width: auto;
   height: 100vh;
   margin: auto;
@@ -38,8 +38,12 @@ div {
 }
 
 .game-over-div {
-  display:none;
   width: 100vw;
   height: 100vh;
   background-color: rgb(254, 225, 1);
+  z-index: 100;
+}
+
+.hide {
+  display: none;
 }

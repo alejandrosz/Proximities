@@ -1,15 +1,14 @@
 class Train {
   constructor(ctx, nodes, connectedStops, colour, track) {
     this.ctx = ctx;
-    // this.track = track;
     this.width = 30;
     this.height = 30;
     this.nodes = nodes;
+    this.node = 0;
     this.posX = connectedStops[0].posX;
     this.posY = connectedStops[0].posY;
     this.colour = colour;
     this.velocity = undefined;
-    this.node = 0;
     this.track = track;
     this.offset = 0;
     this.direction = 1;

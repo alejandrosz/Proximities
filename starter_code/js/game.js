@@ -10,12 +10,11 @@ const Game = {
   buttons: [],
   pickedStations: [],
   multi: 0.9,
-  
-  // trains: [],
 
   init() {
     this.canvas = document.getElementById("canvas");
     this.ctx = this.canvas.getContext("2d");
+    this.imageGO = document.querySelector(".game-over-div");
     this.setDimensions();
     this.start();
   },
@@ -33,6 +32,12 @@ const Game = {
     this.canvas.setAttribute("height", this.height);
   },
 
+  gameOver() {
+    clearInterval(this.interval);
+    this.imageGO.classList.toggle("hide");
+    this.canvas.classList.toggle("hide");
+  },
+
   start() {
     this.reset();
     this.interval = setInterval(() => {
@@ -43,9 +48,11 @@ const Game = {
       // this.tracks.forEach(track => track.availableTracks());
       this.stations.forEach(station => {
         station.checkTrain();
-        station.checkLimit();
+        if (station.checkLimit()) {
+          this.gameOver();
+        }
       });
-      if (this.framesCounter % 100 === 0) {
+      if (this.framesCounter % 600 === 0) {
         this.tracks.forEach(track => (track.maximumLength += 100));
       }
       this.drawAll();
@@ -61,11 +68,11 @@ const Game = {
     this.setListeners();
   },
   createStarterStations() {
-    let station1 = new Station(this.ctx, this.width, this.height, this);
+    let station1 = new Station(this.ctx, this.width, this.height, this, 1);
     this.stations.push(station1);
-    let station2 = new Station(this.ctx, this.width, this.height, this);
+    let station2 = new Station(this.ctx, this.width, this.height, this, 2);
     this.stations.push(station2);
-    let station3 = new Station(this.ctx, this.width, this.height, this);
+    let station3 = new Station(this.ctx, this.width, this.height, this, 3);
     this.stations.push(station3);
   },
   createStarterTracks() {
@@ -112,9 +119,6 @@ const Game = {
   moveAll() {
     this.tracks.forEach(track => track.trains.forEach(train => train.move()));
   },
-  gameOver() {
-    clearInterval(this.interval);
-  },
 
   setListeners() {
     this.station;
@@ -130,19 +134,12 @@ const Game = {
       if (selectedStation && this.pickedStations.length < 2) {
         this.pickedStations.push(selectedStation);
       }
-      // if (selectedStation && this.pickedStations.length === 2) {
-      //   this.selectedTrack.addStop(
-      //     this.pickedStations[0],
-      //     this.pickedStations[1]
-      //   );
-      //   this.pickedStations = [];
-      // }
 
       let selectedButton = this.closestClickedElement(
         e.clientX,
         e.clientY,
         this.buttons,
-        20
+        30
       );
       if (selectedButton) {
         switch (selectedButton.effect) {
@@ -199,42 +196,42 @@ const Game = {
       this.ctx,
       this,
       this.width - 52,
-      this.height / 2 - 75,
+      this.height / 2 - 100,
       "pause"
     );
     let playButton = new Button(
       this.ctx,
       this,
       this.width - 55,
-      this.height / 2 - 45,
+      this.height / 2 - 60,
       "play"
     );
     let fastButton = new Button(
       this.ctx,
       this,
       this.width - 50,
-      this.height / 2 - 15,
+      this.height / 2 - 20,
       "fast"
     );
     let redButton = new Button(
       this.ctx,
       this,
       this.width - 50,
-      this.height / 2 + 15,
+      this.height / 2 + 20,
       "red"
     );
     let blueButton = new Button(
       this.ctx,
       this,
       this.width - 50,
-      this.height / 2 + 45,
+      this.height / 2 + 60,
       "blue"
     );
     let yellowButton = new Button(
       this.ctx,
       this,
       this.width - 50,
-      this.height / 2 + 75,
+      this.height / 2 + 100,
       "yellow"
     );
     this.buttons.push(
@@ -264,13 +261,13 @@ const Game = {
   },
 
   createStationsOnTime() {
-    if (this.framesCounter % (400 * this.multi) === 0) {
+    if (this.framesCounter % (700 * this.multi) === 0) {
       this.stations.push(new Station(this.ctx, this.width, this.height, this));
     }
   },
 
   createPassengersOnTime() {
-    if (this.framesCounter % (180 * this.multi) === 0) {
+    if (this.framesCounter % (210 * this.multi) === 0) {
       new Passenger(this.ctx, this.stations, this);
     }
   },
@@ -282,14 +279,15 @@ const Game = {
       });
     }
   }
-  //   //funciona raro
-
-  // this.stations.forEach(
-  //   function(station) {
-  //     if (station.passengers){
-  //   station.passengers.forEach(passenger => passenger.travel())
-  //    }
-  // )
 };
 
+// let sound = new Howl({
+//   src: ["../sound/metromadrid.mp3"],
+//   autoplay: false,
+//   loop: true,
+//   volume: 1,
+//   onend: function() {
+//     console.log("Finished!");
+//   }
+// });
 // window.onresize = setDimensions;
