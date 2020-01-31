@@ -12,7 +12,7 @@ class Track {
     this.width = width;
     this.height = height;
     this.availableTracks = undefined;
-    this.maximumLength = 300;
+    this.maximumLength = 500;
   }
 
   draw() {

@@ -52,7 +52,7 @@ const Game = {
           this.gameOver();
         }
       });
-      if (this.framesCounter % 600 === 0) {
+      if (this.framesCounter % 800 === 0) {
         this.tracks.forEach(track => (track.maximumLength += 100));
       }
       this.drawAll();
