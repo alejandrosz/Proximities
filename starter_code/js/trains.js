@@ -1,50 +1,48 @@
 class Train {
   constructor(ctx, nodes, connectedStops, colour, track) {
     this.ctx = ctx;
-    // this.track = track;
     this.width = 30;
     this.height = 30;
     this.nodes = nodes;
+    this.node = 0;
     this.posX = connectedStops[0].posX;
     this.posY = connectedStops[0].posY;
     this.colour = colour;
     this.velocity = undefined;
-    this.node = 0;
     this.track = track;
     this.offset = 0;
     this.direction = 1;
-    this.passengers = []
+    this.passengers = [];
   }
   draw() {
     this.ctx.fillStyle = this.colour;
     this.ctx.fillRect(this.posX, this.posY, this.width, this.height);
-    // this.ctx.stroke();
+    this.drawPassenger();
+  }
+  drawPassenger() {
+    this.passengers.forEach((passenger, i) => {
+      passenger.posX = this.posX + 10 * i;
+      passenger.posY =
+        this.passengers.length === 1 ? this.posY + 12 : this.posY;
+      passenger.draw();
+    });
   }
 
   // : this.track.nodes; /* .reverse() */ // this.nodes;
   move() {
-    // if (length < this.track.nodes.length) {
-    //   this.node = 0;
-    //   this.posX = nodes[0].x;
-    //   this.posY = nodes[0].y;
-    // }
-    let originalNodes = this.track.nodes;
-    let nodes = [...this.track.nodes]
-    .concat(
-      [...this.track.nodes].reverse().slice(1, this.track.nodes.length)
-    );
-    let length = nodes.length;
+    if (this.nodes.length === 0) {
+      this.nodes = [...this.track.nodes];
+    }
+    let nodes = this.nodes;
     let idx = this.node;
-
-    if (idx < length - 1) {
+    if (nodes[idx] && nodes[idx + this.direction]) {
+      // console.log('------Idx', this.node, idx + this.direction);
       let x1 = nodes[idx].x;
       let y1 = nodes[idx].y;
-      let x2 = nodes[idx + 1].x;
-      let y2 = nodes[idx + 1].y;
-
+      let x2 = nodes[idx + this.direction].x;
+      let y2 = nodes[idx + this.direction].y;
       let points = { xa: x1, ya: y1, xb: x2, yb: y2 };
       if (points.xa === points.xb && points.ya === points.yb) {
-        //this.node+= 1;
       } else if (points.xa === points.xb && points.ya > points.yb) {
         this.posX = this.posX;
         this.posY -= 1;
@@ -71,37 +69,103 @@ class Train {
         this.posY -= 1;
       }
       if (this.posX === points.xb && this.posY === points.yb) {
-        this.node += 1;
-        /* this.posX = node[0].x;
-        this.posY = node[0].y; */
+        this.node += this.direction;
       }
     }
-    if (idx === length - 1 || idx < 0) {
-      this.node = 0;
-      this.posX = nodes[0].x;
-      this.posY = nodes[0].y;
-      // this.direction *= -1;
+    if (
+      this.node === this.nodes.length - 1 &&
+      this.nodes.length < this.track.nodes.length
+    ) {
+      if (
+        this.nodes[0].x !== this.track.nodes[0].x &&
+        this.nodes[0].y !== this.track.nodes[0].y
+      ) {
+        /* console.log(
+          'Añadido al principio estando al final',
+        ); */
+        this.direction = -1;
+        this.node = [...this.track.nodes].findIndex(
+          n =>
+            n.x === this.nodes[this.nodes.length - 1].x &&
+            n.y === this.nodes[this.nodes.length - 1].y
+        );
+        this.nodes = [...this.track.nodes];
+        this.posX = this.nodes[this.node].x;
+        this.posY = this.nodes[this.node].y;
+      } else if (
+        this.nodes[0].x === this.track.nodes[0].x &&
+        this.nodes[0].y === this.track.nodes[0].y
+      ) {
+        /* console.log(
+          'Añadido al final estando al final',
+        ); */
+        this.node = [...this.track.nodes].findIndex(
+          n =>
+            n.x === this.nodes[this.nodes.length - 1].x &&
+            n.y === this.nodes[this.nodes.length - 1].y
+        );
+        this.nodes = [...this.track.nodes];
+        this.posX = this.nodes[this.node].x;
+        this.posY = this.nodes[this.node].y;
+      }
+    } else if (this.node === 0 && this.nodes.length < this.track.nodes.length) {
+      if (
+        this.nodes[0].x !== this.track.nodes[0].x &&
+        this.nodes[0].y !== this.track.nodes[0].y
+      ) {
+        /* console.log(
+          'Añadido al principio estando en el principio',
+        ); */
+        this.node = [...this.track.nodes].findIndex(
+          n => n.x === this.nodes[0].x && n.y === this.nodes[0].y
+        );
+        this.nodes = [...this.track.nodes];
+        this.posX = this.nodes[this.node].x;
+        this.posY = this.nodes[this.node].y;
+      } else if (
+        this.nodes[0].x === this.track.nodes[0].x &&
+        this.nodes[0].y === this.track.nodes[0].y
+      ) {
+        /* console.log(
+          'Añadido al final estando en el principio',
+        ); */
+        this.direction = -1;
+        this.node = [...this.track.nodes].findIndex(
+          n => n.x === this.nodes[0].x && n.y === this.nodes[0].y
+        );
+        this.nodes = [...this.track.nodes];
+        this.posX = this.nodes[this.node].x;
+        this.posY = this.nodes[this.node].y;
+      }
+    } else if (
+      this.node === 0 &&
+      this.posX === this.nodes[0].x &&
+      this.posY === this.nodes[0].y
+    ) {
+      // console.log('vuelta al principio');
+      this.direction = 1;
+    } else if (
+      this.node === this.nodes.length - 1 &&
+      this.posX === this.nodes[this.nodes.length - 1].x &&
+      this.posY === this.nodes[this.nodes.length - 1].y
+    ) {
+      // console.log('vuelta al final');
+      this.direction = -1;
     }
-    // console.log(this.node);
+    this.checkStation();
+  }
+
+  checkStation() {
+    this.track.connectedStops.find(station => {
+      let goodX =
+        this.posX <= station.posX + 40 && station.posX < this.posX + 40;
+      let goodY =
+        this.posY <= station.posY + 40 && station.posY < this.posY + 40;
+      if (goodX && goodY) {
+        this.passengers = this.passengers.filter(
+          passenger => station.type !== passenger.type
+        );
+      }
+    });
   }
 }
-
-// getInterPoints(pos, nextPos, steps) {
-//   let xStep = (pos.x - nextPos.x) / steps;
-//   let yStep = (pos.y - nextPos.y) / steps;
-//   let interpolatedPoints = [];
-//   for (let i = 0; i < steps; i++) {
-//     let newPos = { x: pos.x + xStep, y: pos.y + yStep };
-//     interpolatedPoints.push(newPos);
-//   }
-//   console.log(interpolatedPoints);
-//   return interpolatedPoints;
-// }
-// getAllInterPoints() {
-//   let allPoints = this.nodes.forEach(function(node, idx) {
-//     if (idx < this.nodes.length) {
-//       return this.getInterPoints(node, this.nodes[idx + 1], 10);
-//     }
-//   });
-//   console.log(allPoints);
-// }
