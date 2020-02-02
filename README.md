@@ -8,11 +8,12 @@ This project is built upon canvas and a lots of javascript.
 
 ## Getting Started
 
-You have to manage a metro network.
-There are three types of station. Triangles, Squares and Circles. In each one appears passengers that want to go to another stations of their type.
-You have to use the red, blue and yellow metro line to join stations and let the passengers travel when the train arrives!
-If more than 6 passengers accumulate in one station you lose.
-Use the mousedown and mouseup to connect stations with tracks. The amount of available tracks increase upon time.
+ - You have to manage a metro network.
+ -  Use the mousedown and mouseup to connect stations with red, blue and yellow lines and let passengers travel when the train arrives!. The amount of available tracks increase upon time.
+ - There are three types of station. Triangles, Squares and Circles. In each one appears passengers that want to go to another stations of their type.
+ - If more than 6 passengers accumulate in one station you lose.
+
+
 https://alejandrosz.github.io/Proximities/
 
 ## Based on
