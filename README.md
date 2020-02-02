@@ -9,7 +9,7 @@ This project is built upon canvas and a lots of javascript.
 ## Getting Started
 
  - You have to manage a metro network.
- -  Use the mousedown and mouseup to connect stations with red, blue and yellow lines and let passengers travel when the train arrives!. The amount of available tracks increase upon time.
+ -  Use the mousedown and mouseup to connect stations with red, blue and yellow lines and let passengers travel when the train arrives! The amount of available tracks increase upon time.
  - There are three types of station. Triangles, Squares and Circles. In each one appears passengers that want to go to another stations of their type.
  - If more than 6 passengers accumulate in one station you lose.
 
