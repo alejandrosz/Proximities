@@ -135,6 +135,7 @@ const Game = {
     this.canvas.addEventListener(
       "ontouchstart",
       e => {
+        e.preventDefault()
         this.onMouseDown(e);
       },
       { passive: false }
@@ -143,6 +144,7 @@ const Game = {
     this.canvas.addEventListener(
       "ontouchend",
       e => {
+        e.preventDefault();
         this.onMouseUp(e);
       },
       { passive: false }
