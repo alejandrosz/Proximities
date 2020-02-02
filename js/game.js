@@ -123,19 +123,10 @@ const Game = {
   setListeners() {
     this.station;
     this.endStation;
-
-    this.canvas.addEventListener("mousedown", e => {
-      this.onMouseDown(e);
-    });
-
-    this.canvas.addEventListener("mouseup", e => {
-      this.onMouseUp(e);
-    });
-
     this.canvas.addEventListener(
       "ontouchstart",
       e => {
-        e.preventDefault()
+        e.preventDefault();
         this.onMouseDown(e);
       },
       { passive: false }
@@ -149,6 +140,14 @@ const Game = {
       },
       { passive: false }
     );
+
+    this.canvas.addEventListener("mousedown", e => {
+      this.onMouseDown(e);
+    });
+
+    this.canvas.addEventListener("mouseup", e => {
+      this.onMouseUp(e);
+    });
   },
 
   onMouseDown(e) {
