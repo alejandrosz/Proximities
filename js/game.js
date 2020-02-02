@@ -125,58 +125,74 @@ const Game = {
     this.endStation;
 
     this.canvas.addEventListener("mousedown", e => {
-      let selectedStation = this.closestClickedElement(
-        e.clientX,
-        e.clientY,
-        this.stations,
-        70
-      );
-      if (selectedStation && this.pickedStations.length < 2) {
-        this.pickedStations.push(selectedStation);
-      }
-
-      let selectedButton = this.closestClickedElement(
-        e.clientX,
-        e.clientY,
-        this.buttons,
-        30
-      );
-      if (selectedButton) {
-        switch (selectedButton.effect) {
-          case "red":
-            this.selectTrack("red");
-            break;
-          case "blue":
-            this.selectTrack("blue");
-            break;
-          case "yellow":
-            this.selectTrack("yellow");
-            break;
-          case "fast":
-            this.upSpeed();
-            break;
-          case "play":
-            this.normalSpeed();
-            break;
-          case "pause":
-            this.pause();
-            break;
-        }
-      }
+      this.onMouseDown(e);
     });
 
     this.canvas.addEventListener("mouseup", e => {
-      let selectedStation = this.closestClickedElement(
-        e.clientX,
-        e.clientY,
-        this.stations,
-        70
-      );
-      if (selectedStation && this.pickedStations.length === 1) {
-        this.selectedTrack.addStop(this.pickedStations[0], selectedStation);
-      }
-      this.pickedStations = [];
+      this.onMouseUp(e);
     });
+
+    this.canvas.addEventListener("ontouchstart", e => {
+      this.onMouseDown(e);
+    });
+
+    this.canvas.addEventListener("ontouchend", e => {
+      this.onMouseUp(e);
+    });
+  },
+
+  onMouseDown(e) {
+    let selectedStation = this.closestClickedElement(
+      e.clientX,
+      e.clientY,
+      this.stations,
+      70
+    );
+    if (selectedStation && this.pickedStations.length < 2) {
+      this.pickedStations.push(selectedStation);
+    }
+
+    let selectedButton = this.closestClickedElement(
+      e.clientX,
+      e.clientY,
+      this.buttons,
+      30
+    );
+    if (selectedButton) {
+      switch (selectedButton.effect) {
+        case "red":
+          this.selectTrack("red");
+          break;
+        case "blue":
+          this.selectTrack("blue");
+          break;
+        case "yellow":
+          this.selectTrack("yellow");
+          break;
+        case "fast":
+          this.upSpeed();
+          break;
+        case "play":
+          this.normalSpeed();
+          break;
+        case "pause":
+          this.pause();
+          break;
+      }
+    }
+  },
+
+  onMouseUp(e) {
+    let selectedStation = this.closestClickedElement(
+      e.clientX,
+      e.clientY,
+      this.stations,
+      70
+    );
+    if (selectedStation && this.pickedStations.length === 1) {
+      this.selectedTrack.addStop(this.pickedStations[0], selectedStation);
+    }
+    this.pickedStations = [];
   },
 
   closestClickedElement(mouseX, mouseY, elements, range) {
@@ -261,13 +277,13 @@ const Game = {
   },
 
   createStationsOnTime() {
-    if (this.framesCounter % (700 * this.multi) === 0) {
+    if (this.framesCounter % (650 * this.multi) === 0) {
       this.stations.push(new Station(this.ctx, this.width, this.height, this));
     }
   },
 
   createPassengersOnTime() {
-    if (this.framesCounter % (210 * this.multi) === 0) {
+    if (this.framesCounter % (220 * this.multi) === 0) {
       new Passenger(this.ctx, this.stations, this);
     }
   },
@@ -280,14 +296,3 @@ const Game = {
     }
   }
 };
-
-// let sound = new Howl({
-//   src: ["../sound/metromadrid.mp3"],
-//   autoplay: false,
-//   loop: true,
-//   volume: 1,
-//   onend: function() {
-//     console.log("Finished!");
-//   }
-// });
-// window.onresize = setDimensions;
