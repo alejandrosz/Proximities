@@ -1,6 +1,7 @@
 body {
   text-align: center;
   position: relative;
+  overscroll-behavior-y: contain;
 }
 
 body h1 {

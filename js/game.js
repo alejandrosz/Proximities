@@ -132,13 +132,21 @@ const Game = {
       this.onMouseUp(e);
     });
 
-    this.canvas.addEventListener("ontouchstart", e => {
-      this.onMouseDown(e);
-    });
+    this.canvas.addEventListener(
+      "ontouchstart",
+      e => {
+        this.onMouseDown(e);
+      },
+      { passive: false }
+    );
 
-    this.canvas.addEventListener("ontouchend", e => {
-      this.onMouseUp(e);
-    });
+    this.canvas.addEventListener(
+      "ontouchend",
+      e => {
+        this.onMouseUp(e);
+      },
+      { passive: false }
+    );
   },
 
   onMouseDown(e) {
