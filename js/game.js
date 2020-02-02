@@ -124,7 +124,7 @@ const Game = {
     this.station;
     this.endStation;
     this.canvas.addEventListener(
-      "ontouchstart",
+      "touchstart",
       e => {
         e.preventDefault();
         this.onMouseDown(e);
@@ -133,7 +133,7 @@ const Game = {
     );
 
     this.canvas.addEventListener(
-      "ontouchend",
+      "touchend",
       e => {
         e.preventDefault();
         this.onMouseUp(e);
