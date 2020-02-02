@@ -123,29 +123,29 @@ const Game = {
   setListeners() {
     this.station;
     this.endStation;
-    this.canvas.addEventListener(
-      "touchstart",
-      e => {
-        e.preventDefault();
-        this.onMouseDown(e);
-      },
-      { passive: false }
-    );
+    // this.canvas.addEventListener(
+    //   "touchstart",
+    //   e => {
+    //     e.preventDefault();
+    //     this.onMouseDown(e);
+    //   },
+    //   { passive: false }
+    // );
 
-    this.canvas.addEventListener(
-      "touchend",
-      e => {
-        e.preventDefault();
-        this.onMouseUp(e);
-      },
-      { passive: false }
-    );
+    // this.canvas.addEventListener(
+    //   "touchend",
+    //   e => {
+    //     e.preventDefault();
+    //     this.onMouseUp(e);
+    //   },
+    //   { passive: false }
+    // );
 
-    this.canvas.addEventListener("mousedown", e => {
+    this.canvas.addEventListener("pointerdown", e => {
       this.onMouseDown(e);
     });
 
-    this.canvas.addEventListener("mouseup", e => {
+    this.canvas.addEventListener("pointerup", e => {
       this.onMouseUp(e);
     });
   },
