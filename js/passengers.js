@@ -48,16 +48,16 @@ class Passenger {
   draw() {
     this.ctx.drawImage(
       this.image,
-      this.posX, // mas un margen
-      this.posY, // mas un margen
+      this.posX, 
+      this.posY, 
       this.width,
       this.height
     );
   }
 
-  drawText() {
-    this.ctx.fillText(this.number, this.posX + 2, this.posY - 2, 15);
-  }
+  // drawText() {
+  //   this.ctx.fillText(this.number, this.posX + 2, this.posY - 2, 15);
+  // }
 
   travel() {
     let choosenStation = this.checkDestination();

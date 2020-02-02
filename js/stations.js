@@ -7,7 +7,7 @@ class Station {
     this.height = 40;
     this.posX = width / 2;
     this.posY = height / 2;
-    this.type = type || Math.floor(Math.random() * (4 - 1)) + 1; // entre 1 y 3
+    this.type = type || Math.floor(Math.random() * (4 - 1)) + 1; 
     this.passengers = [];
     this.image = new Image();
     this.chooseImage();
@@ -95,9 +95,9 @@ class Station {
     );
   }
 
-  drawText() {
-    this.ctx.fillText(this.number, this.posX - 11, this.posY - 1, 35);
-  }
+  // drawText() {
+  //   this.ctx.fillText(this.number, this.posX - 11, this.posY - 1, 35);
+  // }
 
   addPassenger(passenger) {
     this.passengers.push(passenger);

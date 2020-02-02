@@ -142,6 +142,11 @@ const Game = {
   },
 
   onMouseDown(e) {
+    this.selectFirstStation(e);
+    this.selectButton(e);
+  },
+
+  selectFirstStation(e) {
     let selectedStation = this.closestClickedElement(
       e.clientX,
       e.clientY,
@@ -151,7 +156,9 @@ const Game = {
     if (selectedStation && this.pickedStations.length < 2) {
       this.pickedStations.push(selectedStation);
     }
+  },
 
+  selectButton(e) {
     let selectedButton = this.closestClickedElement(
       e.clientX,
       e.clientY,
@@ -181,7 +188,6 @@ const Game = {
       }
     }
   },
-
   onMouseUp(e) {
     let selectedStation = this.closestClickedElement(
       e.clientX,

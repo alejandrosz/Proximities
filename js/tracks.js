@@ -98,7 +98,6 @@ class Track {
           return 0;
         }
       })
-
       .reduce((a, b) => a + b, 0);
     return long;
   }
@@ -116,33 +115,36 @@ class Track {
   addStop(previousStation, station) {
     if (this.availableTracks > 0) {
       if (this.connectedStops.length === 0) {
-        station.chooseImageConnected();
-        previousStation.chooseImageConnected();
-        this.connectedStops.push(previousStation, station);
-        station.addTrack(this);
-        previousStation.addTrack(this);
+        this.connectStation(station);
+        this.connectStation(previousStation);
       } else if (
         this.connectedStops.length !== 0 &&
         !this.connectedStops.includes(previousStation)
       ) {
         return false;
       } else if (this.connectedStops[0].number === previousStation.number) {
-        station.chooseImageConnected();
-        this.connectedStops.unshift(station);
-        station.addTrack(this);
+        this.connectStation(station, true);
       } else if (
         this.connectedStops[this.connectedStops.length - 1].number ===
         previousStation.number
       ) {
-        station.chooseImageConnected();
-        this.connectedStops.push(station);
-        station.addTrack(this);
+        this.connectStation(station);
       }
       this.getPath();
       if (this.trains.length === 0) {
         this.createTrain();
       }
     }
+  }
+
+  connectStation(station, unshift) {
+    station.chooseImageConnected();
+    if (unshift === true) {
+      this.connectedStops.unshift(station);
+    } else {
+      this.connectedStops.push(station);
+    }
+    station.addTrack(this);
   }
   createTrain() {
     this.trains.push(
